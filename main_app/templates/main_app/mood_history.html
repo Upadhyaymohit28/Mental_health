@@ -1,0 +1,10 @@
+<!-- main_app/templates/main_app/mood_history.html -->
+<h2>Your Mood History</h2>
+<p>Total Points: {{ total_points }}</p>
+<ul>
+  {% for mood in moods %}
+    <li>{{ mood.date.strftime('%Y-%m-%d') }}: Mood {{ mood.mood }}{% if mood.note %} - {{ mood.note }}{% endif %}</li>
+  {% empty %}
+    <li>No mood entries yet.</li>
+  {% endfor %}
+</ul>
