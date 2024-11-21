@@ -1,0 +1,7 @@
+<h1>Profile</h1>
+<p><strong>Username:</strong> {{ request.user.username }}</p>
+<p><strong>Age:</strong> {{ request.user.profile.age }}</p>
+<p><strong>Preferences:</strong> {{ request.user.profile.preferences }}</p>
+<p><strong>Mental Health Goals:</strong> {{ request.user.profile.mental_health_goals }}</p>
+<a href="{% url 'update_profile' %}">Edit Profile</a>
+<a href="{% url 'home' %}">Back to Home</a>
