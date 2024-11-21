@@ -1,0 +1,11 @@
+<h1>Today's Challenge</h1>
+{% if challenge %}
+    <p><strong>Task:</strong> {{ challenge.task }}</p>
+    <p>Status: {{ challenge.is_completed|yesno:"Completed,Incomplete" }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" name="complete_challenge" value="true">Mark as Completed</button>
+    </form>
+{% else %}
+    <p>No challenge assigned for today.</p>
+{% endif %}

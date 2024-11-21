@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'moodtracking',
     'chatbot',
     'gamification',
-    'content'
+    'content',
+    'django_cron'
 ]
 
 MIDDLEWARE = [

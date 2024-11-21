@@ -1,0 +1,8 @@
+<h1>Your Badges</h1>
+<ul>
+    {% for badge in badges %}
+        <li>
+            <strong>{{ badge.name }}</strong>: {{ badge.description }} (Awarded: {{ badge.awarded_at|date:"Y-m-d" }})
+        </li>
+    {% endfor %}
+</ul>
