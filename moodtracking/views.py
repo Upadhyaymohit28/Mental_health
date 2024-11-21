@@ -1,12 +1,23 @@
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from .forms import MoodLogForm
 
-from moodtracking.models import MoodLog
+
+@login_required
+def log_mood(request):
+    if request.method == 'POST':
+        form = MoodLogForm(request.POST)
+        if form.is_valid():
+            mood_log = form.save(commit=False)
+            mood_log.user = request.user
+            mood_log.save()
+            return redirect('mood_history')
+    else:
+        form = MoodLogForm()
+    return render(request, 'moodtracking/log_mood.html', {'form': form})
 
 
 @login_required
 def mood_history(request):
-    moods = MoodLog.objects.filter(user=request.user).order_by('date')
-    total_points = sum(mood.get_points() for mood in moods)
-    return render(request, 'moodtracking/mood_history.html',
-                  {'total_points': total_points, 'moods': moods})
+    mood_logs = request.user.mood_logs.order_by('-timestamp')
+    return render(request, 'moodtracking/mood_history.html', {'mood_logs': mood_logs})

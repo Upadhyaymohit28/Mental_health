@@ -1,0 +1,8 @@
+<h1>Log Your Mood</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+<a href="{% url 'mood_history' %}">View Mood History</a>
+<a href="{% url 'home' %}">Back to Home</a>
