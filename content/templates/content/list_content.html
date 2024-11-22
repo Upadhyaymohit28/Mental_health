@@ -1,0 +1,9 @@
+<h1>Educational Resources</h1>
+<ul>
+    {% for content in contents %}
+    <li>
+        <a href="{% url 'content_detail' content.id %}">{{ content.title }}</a>
+        <p>Type: {{ content.content_type }} | Category: {{ content.category }}</p>
+    </li>
+    {% endfor %}
+</ul>
