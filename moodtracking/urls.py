@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('mood_history/', views.mood_history, name='mood_history'),
+    path('log/', views.log_mood, name='log_mood'),
+    path('history/', views.mood_history, name='mood_history'),
 ]

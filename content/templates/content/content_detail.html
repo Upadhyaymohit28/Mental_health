@@ -1,0 +1,9 @@
+<h1>{{ content.title }}</h1>
+<p><strong>Type:</strong> {{ content.content_type }}</p>
+<p><strong>Category:</strong> {{ content.category }}</p>
+<p><strong>Published:</strong> {{ content.created_at|date:"Y-m-d" }}</p>
+<p>{{ content.body }}</p>
+{% if content.source_url %}
+<p><a href="{{ content.source_url }}" target="_blank">View Source</a></p>
+{% endif %}
+<a href="{% url 'list_content' %}">Back to Resources</a>
