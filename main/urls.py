@@ -6,6 +6,5 @@ urlpatterns = [
     path('crisis_support/', views.crisis_support, name='crisis_support'),
     path('resources/', views.resources, name='resources'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
-    path('api/chatbot/', views.chatbot_response, name='chatbot_response'), 
     
 ]
