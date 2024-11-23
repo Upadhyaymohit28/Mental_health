@@ -1,1 +1,21 @@
 .idea
+# Python compiled files
+*.pyc
+__pycache__/
+
+# Django migrations
+main/migrations/
+chatbot/migrations/
+content/migrations/
+gamification/migrations/
+moodtracking/migrations/
+users/migrations/
+
+# Logs
+debug.log
+
+# Static files
+/static/
+
+# Virtual environment
+venv/
