@@ -43,6 +43,12 @@ def logout_user(request):
     logout(request)
     return redirect('home')
 
+@login_required
+def dashboard(request):
+    """Dashboard 视图"""
+    return render(request, 'users/pages/dashboard.html', {
+        "active_menu": "Dashboard",  # 高亮 Dashboard 菜单
+    })
 
 @login_required
 def profile(request):
