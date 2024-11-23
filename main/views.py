@@ -25,13 +25,23 @@ def privacy_policy(request):
 # Set your OpenAI API key
 openai.api_key = "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"
 
+import openai
+import logging
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
+# Configure logging
 logger = logging.getLogger(__name__)
+
+# Set your OpenAI API key
+openai.api_key = "your_openai_api_key"  # Replace with your actual API key
 
 @csrf_exempt
 def chatbot_response(request):
     if request.method == 'POST':
         try:
+            # Parse JSON data from the request
             data = json.loads(request.body)
             logger.debug(f"Received data: {data}")
 
@@ -40,17 +50,16 @@ def chatbot_response(request):
                 logger.error("Empty user message received.")
                 return JsonResponse({"error": "Message cannot be empty"}, status=400)
 
-            response = openai.ChatCompletion.create(
-                model="gpt-4",  # Replace with "gpt-3.5-turbo" if needed
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": user_message},
-                ],
+            # Generate response using OpenAI's Completion API
+            response = openai.Completion.create(
+                engine="text-davinci-003",  # Use the correct engine
+                prompt=f"User: {user_message}\nAI:",
                 max_tokens=150,
                 temperature=0.7,
             )
 
-            ai_message = response['choices'][0]['message']['content'].strip()
+            # Extract the AI's message
+            ai_message = response['choices'][0]['text'].strip()
             logger.debug(f"AI Response: {ai_message}")
 
             return JsonResponse({"message": ai_message})
