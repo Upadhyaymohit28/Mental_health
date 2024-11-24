@@ -1,4 +1,3 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,155 +6,302 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mental Health App{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- 引入 FontAwesome 图标库 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- 引入 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700" rel="stylesheet">
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <header class="navbar">
-        <div class="logo">Mental Health</div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="{% url 'home' %}">Home</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </header>
-
-    <!-- 主内容布局 -->
-    <div class="layout">
+    <!-- 主容器 -->
+    <div class="main-container">
         <!-- 侧边栏 -->
         <aside class="sidebar">
-            <nav>
-                <ul class="sidebar-menu">
+            <div class="sidebar-logo">
+                <div class="logo">Mental Health</div>
+            </div>
+            <nav class="sidebar-menu">
+                <ul>
                     <li class="{% if active_menu == 'Dashboard' %}active{% endif %}">
-                        <a href="{% url 'dashboard' %}" class="sidebar-link">
-                            <i class="sidebar-icon">🏠</i> Dashboard
+                        <a href="{% url 'dashboard' %}">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
                         </a>
                     </li>
+                    <!-- 其他菜单项 -->
                 </ul>
             </nav>
+            {% if user.is_authenticated %}
+            <!-- Logout 图标按钮 -->
+            <div class="logout-container">
+                <button class="logout-btn" onclick="location.href='{% url 'logout' %}'">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+            {% endif %}
         </aside>
 
-        <!-- 主内容区域 -->
-        <main class="content">
-            {% block content %}
-            <!-- 页面内容动态插入 -->
-            {% endblock %}
-        </main>
+        <!-- 内容包装器 -->
+        <div class="content-wrapper">
+            <!-- 头部 -->
+            <header class="header">
+                <nav class="header-menu">
+                    <ul>
+                        <li><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+                        {% if user.is_authenticated %}
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#notificationsModal">
+                                <i class="fas fa-bell"></i>
+                                {% if unread_count > 0 %}
+                                    <span class="badge badge-danger">{{ unread_count }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i></a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </header>
+
+            <!-- 内容区域 -->
+            <main class="content">
+                {% block content %}
+                <!-- Dashboard 内容 -->
+                <div class="welcome">
+                    <h2>Welcome to the Dashboard</h2>
+                    <p>Here, you can manage your mental health journey, track your progress, and access various features.</p>
+                </div>
+                {% endblock %}
+            </main>
+
+            <!-- 页脚 -->
+            <footer class="footer">
+                <p>&copy; 2024 Mental Health App | <a href="{% url 'privacy_policy' %}">Privacy Policy</a></p>
+            </footer>
+        </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Mental Health App | <a href="{% url 'privacy_policy' %}">Privacy Policy</a></p>
-    </footer>
+    <!-- 引入通知模态框 -->
+    {% include "users/notifications.html" %}
 
-    <!-- 样式 -->
+    <!-- 引入 Bootstrap JS 和依赖 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- 自定义样式 -->
     <style>
-        /* Header 样式 */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #fff; /* 白色背景 */
-            color: #333;
-            border-bottom: 1px solid #ccc; /* 添加下边框 */
+        /* 根变量 */
+        :root {
+            --theme-color: #5A9; /* 使用主页相近的颜色 */
+            --background-color: #FFFFFF; /* 白色背景 */
+            --text-color: #343A40; /* 深色文字 */
+            --light-text-color: #FFFFFF;
         }
 
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
             margin: 0;
-            padding: 0;
         }
 
-        .nav-links li {
-            margin-left: 20px;
+        .main-container {
+            display: flex;
+            min-height: 100vh;
         }
 
-        .nav-links a {
-            color: #333;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .nav-links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Sidebar 样式 */
+        /* 侧边栏样式 */
         .sidebar {
             width: 240px;
-            background-color: #2c3e50;
-            padding: 20px;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
+            background-color: var(--background-color);
+            padding: 20px 0;
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
         }
 
-        .sidebar-menu {
+        .sidebar-logo {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .sidebar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--theme-color);
+        }
+
+        .sidebar-menu ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
         .sidebar-menu li {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
-        .sidebar-menu li.active a {
-            font-weight: bold;
-            color: #3498db;
-        }
-
-        .sidebar-link {
-            text-decoration: none;
-            color: #ecf0f1;
-            font-size: 16px;
+        .sidebar-menu a {
             display: flex;
             align-items: center;
-            padding: 10px;
-            border-radius: 4px;
+            padding: 12px 20px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s;
         }
 
-        .sidebar-link:hover {
-            background-color: #34495e;
+        .sidebar-menu .active a {
+            background-color: var(--theme-color);
+            color: var(--light-text-color);
         }
 
-        .sidebar-icon {
-            margin-right: 10px;
+        .sidebar-menu a:hover {
+            background-color: var(--theme-color);
+            color: var(--light-text-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        /* Logout 图标按钮样式 */
+        .logout-container {
+            margin-top: auto; /* 将 Logout 推到底部 */
+            padding: 0 20px; /* 内边距以调整整体对齐 */
+            display: flex;
+            justify-content: flex-end; /* 将图标推到右侧 */
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 24px;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .logout-btn i {
+            margin-right: 8px;
+        }
+
+        .logout-btn:hover {
+            color: var(--theme-color);
+        }
+
+        /* 内容包装器 */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 头部样式 */
+        .header {
+            background-color: var(--background-color);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-shadow: none; /* 移除头部分割线 */
+        }
+
+        .header-menu ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-menu li {
+            margin-left: 20px;
+        }
+
+        .header-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 20px;
+            position: relative;
+        }
+
+        .header-menu a:hover {
+            color: var(--theme-color);
+        }
+
+        .header-menu i {
             font-size: 20px;
         }
 
-        /* Main 内容布局 */
-        .layout {
+        /* 修改徽章样式 */
+        .header-menu .badge.badge-danger {
+            font-size: 10px; /* 缩小字体大小 */
+            padding: 2px 5px; /* 调整内边距 */
+            border-radius: 50%; /* 圆形外观 */
+            min-width: 16px; /* 设置最小宽度 */
+            height: 16px; /* 设置高度 */
             display: flex;
-            margin-top: 20px;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            position: absolute;
+            top: -5px; /* 调整徽章位置 */
+            right: -5px; /* 调整徽章位置 */
         }
 
+        /* 内容样式 */
         .content {
-            margin-left: 260px; /* 留出侧边栏宽度 */
             padding: 20px;
-            width: 100%;
+            flex: 1;
         }
 
-        /* Footer 样式 */
-        footer {
+        .welcome h2 {
+            color: var(--text-color);
+        }
+
+        .welcome p {
+            color: var(--text-color);
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: var(--background-color);
+            color: var(--text-color);
             text-align: center;
-            padding: 10px 0;
-            background-color: #f4f4f4;
-            color: #333;
+            padding: 10px 20px;
+            box-shadow: none; /* 移除页脚分割线 */
+        }
+
+        .footer a {
+            color: var(--theme-color);
+            text-decoration: underline;
+        }
+
+        /* 响应式设计 */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+
+            .sidebar-menu a span {
+                display: none;
+            }
+
+            .header-menu ul {
+                flex-direction: column;
+                align-items: flex-end;
+            }
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 当模态框关闭时刷新整个页面
+            $('#notificationsModal').on('hidden.bs.modal', function () {
+                location.reload(); // 刷新整个页面
+            });
+        });
+    </script>
 </body>
 </html>
