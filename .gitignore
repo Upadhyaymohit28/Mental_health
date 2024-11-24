@@ -10,6 +10,7 @@ content/migrations/
 gamification/migrations/
 moodtracking/migrations/
 users/migrations/
+support/migrations/
 
 # Logs
 debug.log

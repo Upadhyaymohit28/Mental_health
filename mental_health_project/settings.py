@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'chatbot',
     'gamification',
     'content',
+    'support',
     'django_cron'
 ]
 
