@@ -11,8 +11,7 @@ import openai
 logger = logging.getLogger(__name__)
 
 # Set your OpenAI API key
-
-openai.api_key = "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"
+openai.api_key ="open ai key"
 
 
 @csrf_exempt
