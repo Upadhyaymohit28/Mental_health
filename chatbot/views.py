@@ -1,14 +1,17 @@
+
 import logging
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import openai
+from datetime import datetime, timedelta
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
 # Set your OpenAI API key
-openai.api_key = "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"
+openai.api_key = "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"
+
 @csrf_exempt
 def chatbot_response(request):
     logger.debug("Entering chatbot_response function")
