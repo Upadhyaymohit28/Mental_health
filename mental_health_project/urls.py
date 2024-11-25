@@ -9,4 +9,5 @@ urlpatterns = [
     path('chatbot/', include('chatbot.urls')),
     path('gamification/', include('gamification.urls')),
     path('content/', include('content.urls')),
+    path('support/', include('support.urls')),
 ]
