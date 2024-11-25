@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- templates/users/user_sidebar.html -->
 <aside class="sidebar">
     <nav>
@@ -11,3 +12,18 @@
         </ul>
     </nav>
 </aside>
+=======
+<!-- templates/users/user_sidebar.html -->
+<aside class="sidebar">
+    <nav>
+        <ul class="sidebar-menu">
+            <li class="{% if active_menu == 'Add Mood' %}active{% endif %}">
+                <a href="{% url 'add_mood' %}" class="sidebar-link">
+                    <span class="sidebar-icon">📝</span>
+                    Add Mood
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+>>>>>>> 00135689df92aba2bb4bdeffae8a0291044eb1f3

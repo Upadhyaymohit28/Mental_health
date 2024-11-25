@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from ..forms import UserProfileForm
 from ..models import UserProfile, Notification
+<<<<<<< HEAD
 from moodtracking.models import MoodLog
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
@@ -16,6 +17,10 @@ import random
 from content.models import EducationalContent
 from moodtracking.forms import MoodLogForm
 from django.shortcuts import redirect
+=======
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+>>>>>>> 00135689df92aba2bb4bdeffae8a0291044eb1f3
 
 def signup(request):
     if request.method == 'POST':
@@ -66,6 +71,15 @@ def logout_user(request):
     logout(request)
     return redirect('home')
 
+<<<<<<< HEAD
+=======
+@login_required
+def dashboard(request):
+    """Dashboard 视图"""
+    return render(request, 'users/pages/dashboard.html', {
+        "active_menu": "Dashboard",  # 高亮 Dashboard 菜单
+    })
+>>>>>>> 00135689df92aba2bb4bdeffae8a0291044eb1f3
 
 @login_required
 def profile(request):
@@ -73,12 +87,17 @@ def profile(request):
 
 @login_required
 def update_profile(request):
+<<<<<<< HEAD
     # 确保用户的 Profile 存在
+=======
+    # Ensure the profile exists
+>>>>>>> 00135689df92aba2bb4bdeffae8a0291044eb1f3
     profile, created = UserProfile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
+<<<<<<< HEAD
             # 保存数据并显示成功消息
             form.save()
             messages.success(request, 'Your profile has been updated successfully!')
@@ -164,3 +183,11 @@ def consultation(request):
     return render(request, 'users/pages/consultation.html', {
         "active_menu": "AIConsultation",  # 动态高亮侧边栏菜单项
     })
+=======
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=profile)
+    return render(request, 'users/update_profile.html', {'form': form})
+
+>>>>>>> 00135689df92aba2bb4bdeffae8a0291044eb1f3
