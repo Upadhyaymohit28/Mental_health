@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *  # 导入 __init__.py 中定义的所有函数
+from .views import *  
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -11,4 +11,8 @@ urlpatterns = [
     path('notifications/mark_as_read/', mark_as_read, name='mark_as_read'),
     path('profile/', profile, name='profile'),
     path('profile/update/', update_profile, name='update_profile'),
+    path('mood-tracking/', mood_tracking, name='mood_tracking'),
+    path('videos/', video_recommendations, name='video_recommendations'),
+    path('videos/<int:content_id>/', recommendation_detail, name='recommendation_detail'), 
+    path('consultation/', consultation, name='ai_consultation'),
 ]

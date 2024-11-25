@@ -5,14 +5,20 @@ from .main_views import (
     dashboard,
     profile,
     update_profile,
+    mood_tracking,  
+    video_recommendations,  
+    consultation,
+    recommendation_detail,   
 )
 from .notifications import (
     notifications_view,
     mark_all_read,
     mark_as_read,
 )
+from django.shortcuts import render, get_object_or_404
+from content.models import EducationalContent
 
-# 导出所有需要的视图函数
+
 __all__ = [
     "signup",
     "login_user",
@@ -23,4 +29,8 @@ __all__ = [
     "notifications_view",
     "mark_all_read",
     "mark_as_read",
+    "mood_tracking",  
+    "video_recommendations",  
+    "consultation",  
+    "recommendation_detail",
 ]

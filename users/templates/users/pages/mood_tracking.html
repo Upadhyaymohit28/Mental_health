@@ -1,0 +1,17 @@
+{% extends 'users/base.html' %}
+
+{% block title %}
+    Mood Tracking
+{% endblock %}
+
+{% block content %}
+<!-- 引用滑块部分 -->
+<div>
+    {% include 'moodtracking/log_mood.html' %}
+</div>
+
+<!-- 引用历史记录部分 -->
+<div>
+    {% include 'moodtracking/mood_history.html' %}
+</div>
+{% endblock %}

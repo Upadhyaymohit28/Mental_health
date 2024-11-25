@@ -1,0 +1,7 @@
+<h1>{{ content.title }}</h1>
+<p><strong>Category:</strong> {{ content.category }}</p>
+<p>{{ content.body }}</p>
+{% if content.source_url %}
+<p><a href="{{ content.source_url }}">Source</a></p>
+{% endif %}
+<a href="{% url 'video_recommendations' %}">Back to Recommendations</a>
