@@ -1,16 +1,312 @@
-<!-- templates/users/pages/dashboard.html -->
 {% extends 'users/base.html' %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<section>
-    <h1>Welcome to the Dashboard</h1>
-    <p>Here, you can manage your mental health journey, track your progress, and access various features.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 头部内容保持不变 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+ /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
 
-    <div class="dashboard-content">
-        <h3>Your Dashboard Features</h3>
-        <p>Stay tuned for more updates!</p>
+        .welcome-section {
+            background-color: var(--theme-color); /* 替换为您的主题色 */
+            color: #fff;
+            text-align: left;
+            padding: 30px 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .welcome-section h2 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        .welcome-section p {
+            font-size: 1rem;
+            margin-top: 10px;
+            margin-left: 20px; /* 第二行向右缩进 */
+        }
+
+        .dashboard-section {
+            gap: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card.left-card {
+            max-width: 700px;
+            flex: 2;
+        }
+
+        .card.ai-consultation {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        /* 左侧Tab区域样式调整 */
+        .tab-container {
+            display: flex;
+            justify-content: center; /* 居中对齐 */
+            gap: 20px;
+            border-bottom: none; /* 去掉分界线 */
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f0f0f0; /* 默认灰色背景 */
+            color: var(--theme-color); /* 主题色字体 */
+            border: none; /* 去掉边框 */
+            outline: none; 
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .tab.active {
+            background-color: var(--theme-color); /* 激活背景使用主题色 */
+            color: #fff; /* 激活状态字体白色 */
+            border-radius: 8px; /* 圆角 */
+        }
+
+        .tab-content {
+            flex: 1;
+            padding-top: 20px;
+            border-top: none; /* 移除Tab和内容间的分界线 */
+        }
+
+
+        .tab-pane button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: var(--theme-color);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .tab-pane button:hover {
+            background-color: #164395;
+        }
+
+        /* AI 咨询卡片样式 */
+        .card.ai-consultation .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--theme-color); 
+            background-color: transparent; 
+            border-bottom: none; 
+        }
+
+        .robot-icon {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .robot-icon img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .card.ai-consultation p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: auto; /* 将其推到底部 */
+        }
+
+        .input-area textarea {
+            flex: 1;
+            min-height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .send-button {
+            background-color: var(--theme-color);
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .send-button:hover {
+            background-color: #164395;
+        }
+
+        /* 调整高度 */
+        .dashboard-container .card {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <!-- 欢迎部分 -->
+    <section class="welcome-section">
+        <h2 id="welcome-message">Hello 🌅, {{ request.user.username }}</h2>
+        <p id="sub-message">Good morning! Shine bright like the sun.</p>
+    </section>
+
+    <!-- 主内容部分 -->
+    <section class="dashboard-section">
+        <!-- 左侧：带选项卡的卡片 -->
+        <div class="card left-card">
+            <div class="tab-container">
+                <button class="tab active" data-tab="mood-tracking">Mood Tracking</button>
+                <button class="tab" data-tab="video-recommendation">Video Recommendations</button>
+            </div>
+            <div class="tab-content">
+                <!-- 心情追踪内容 -->
+                <div class="tab-pane active" id="mood-tracking">
+                    <p>Monitor and manage your emotional health effectively.</p>
+                
+                    <!-- 最近心情记录 -->
+                    <div class="recent-mood-logs">
+                        <h3>Your Recent Mood Logs</h3>
+                        {% if recent_mood_logs %}
+                            <ul>
+                                {% for log in recent_mood_logs %}
+                                    <li>
+                                        <strong>{{ log.timestamp|date:"Y-m-d H:i" }}</strong>: 
+                                        Mood Score: {{ log.mood_score }}/10 - 
+                                        {{ log.description }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No mood logs available. Start tracking your mood!</p>
+                        {% endif %}
+                    </div>
+                
+                    <button onclick="location.href='{% url 'mood_tracking' %}';">Log Your Mood</button>
+                </div>
+                <!-- 视频推荐内容 -->
+                <div class="tab-pane" id="video-recommendation">
+                    <p>Explore videos tailored to enhance your mental health journey.</p>
+                    
+                    <!-- 显示随机推荐的视频 -->
+                    {% if random_video %}
+                        <div class="video-recommendation">
+                            <h3>{{ random_video.title }}</h3>
+                            <p>{{ random_video.body }}</p>
+                            <a href="{{ random_video.source_url }}" target="_blank" class="btn btn-primary">
+                                Watch Video
+                            </a>
+                        </div>
+                    {% else %}
+                        <p>No videos available at the moment.</p>
+                    {% endif %}
+                    
+                    <!-- 原有按钮 -->
+                    <button onclick="location.href='{% url 'video_recommendations' %}';">Go to Videos</button>
+                </div>
+            </div>
+        </div>
+
+<!-- 右侧：AI 咨询卡片 -->
+<div class="card ai-consultation" style="background-color: #396964; color: white; border-radius: 15px; padding: 20px;">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="color: white; font-size: 1.8rem; margin: 0;">Talk to Our AI Wellness Companion</h3>
+        <img src="/static/images/A_cartoon-style_robot.png" alt="Robot Icon" style="width: 100px; height: auto;">
     </div>
-</section>
+    <p style="margin: 15px 0 0; font-size: 0.9rem; line-height: 1.5; text-align: left; color: white;">
+        Engage in a conversation with our AI wellness companion for thoughtful guidance and support. We're here to help you feel your best.
+    </p>
+    <div class="input-area" style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
+        <textarea placeholder="Type your question here..." style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 1rem;"></textarea>
+        <button style="background-color: #ffb703; color: white; padding: 10px 15px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;" onclick="location.href='{% url 'ai_consultation' %}';">Send</button>
+    </div>
+</div>
+
+          
+    </section>
+
+    <script>
+        // 根据时间动态更新欢迎信息
+        const welcomeMessage = document.getElementById("welcome-message");
+        const subMessage = document.getElementById("sub-message");
+        const hours = new Date().getHours();
+
+        let greetingIcon = "☀️";
+        let subText = "Good morning! Shine bright like the sun.";
+        
+        if (hours >= 12 && hours < 18) {
+            greetingIcon = "🌤️";
+            subText = "Good afternoon! Keep going, you're doing great.";
+        } else if (hours >= 18 || hours < 6) {
+            greetingIcon = "🌙";
+            subText = "Good evening! Rest and recharge for tomorrow.";
+        }
+
+        welcomeMessage.innerHTML = `Hello ${greetingIcon}, {{ request.user.username }}`;
+        subMessage.textContent = subText;
+
+        // 选项卡功能
+        const tabs = document.querySelectorAll('.tab');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有选项卡和内容的激活状态
+                tabs.forEach(t => t.classList.remove('active'));
+                tabPanes.forEach(pane => pane.classList.remove('active'));
+
+                // 激活选中的选项卡和对应的内容
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
 {% endblock %}

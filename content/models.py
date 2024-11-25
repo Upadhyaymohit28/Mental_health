@@ -11,7 +11,10 @@ class EducationalContent(models.Model):
     content_type = models.CharField(max_length=50, choices=CONTENT_TYPE_CHOICES, default='Article')
     category = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
-    source_url = models.URLField(blank=True, null=True)  # Optional for linking external content
+    source_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        app_label = 'content'  # 将 'content' 替换为实际的 app 名称
