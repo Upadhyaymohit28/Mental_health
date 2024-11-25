@@ -15,7 +15,7 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About Us</a></li>
-                <li><a href="#services">Services</a></li>
+                <li><a href="{% url 'support_resources' %}">Service</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'dashboard' %}" class="dashboard-btn">Dashboard</a></li>
                     <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Mental Health App</title>
+    <script src="{% static 'js/support.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/support.css' %}">
+</head>
+<body>
+<h1>Service Page</h1>
+
+<div class="tab-container">
+    <!-- Tabs -->
+    <button class="tab-button active" onclick="openTab(event, 'EmergencyContacts')">Emergency Contacts</button>
+    <button class="tab-button" onclick="openTab(event, 'ProfessionalConnections')">Professional Connections</button>
+</div>
+
+<div class="tab-content">
+    <!-- Emergency Contacts Section -->
+    <div id="EmergencyContacts" class="tab-pane active">
+        <h2>Emergency Contacts</h2>
+        <ul>
+            {% for contact in emergency_contacts %}
+                <li>
+                    <strong>{{ contact.name }}</strong> - {{ contact.region }}
+                    <p>{{ contact.description }}</p>
+                    <p>Phone: {{ contact.phone_number }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Professional Connections Section -->
+    <div id="ProfessionalConnections" class="tab-pane">
+        <h2>Professional Connections</h2>
+        <ul>
+            {% for professional in professional_connections %}
+                <li>
+                    <strong>{{ professional.name }}</strong> - {{ professional.specialization }}
+                    <p>{{ professional.description }}</p>
+                    {% if professional.phone_number %} <p>Phone: {{ professional.phone_number }}</p> {% endif %}
+                    {% if professional.email %}
+                        <p>Email: <a href="mailto:{{ professional.email }}">{{ professional.email }}</a></p> {% endif %}
+                    {% if professional.website %}
+                        <p>Website: <a href="{{ professional.website }}" target="_blank">{{ professional.website }}</a>
+                        </p> {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</body>
+</html>
