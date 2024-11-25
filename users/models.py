@@ -8,9 +8,7 @@ class UserProfile(models.Model):
     mental_health_goals = models.TextField(blank=True)
 
     def __str__(self):
-        return self.user.username
-    
-
+        return self.user.username   
     
 class Notification(models.Model):
     TYPE_CHOICES = [
