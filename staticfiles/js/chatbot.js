@@ -16,27 +16,23 @@ document.addEventListener("DOMContentLoaded", function () {
         chatbotInput.value = "";
 
         // Send message to backend
-        
         try {
-            const response = await fetch("/chatbot/chatbot/", {
+            const response = await fetch("/chabot/api/chatbot/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ message: "Hello, chatbot!" }),
+                body: JSON.stringify({ message: userMessage }),
             });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-        
+
             const data = await response.json();
-            chatbotMessages.innerHTML += `<div class="ai-message">AI: ${data.message}</div>`;
+            if (data.message) {
+                chatbotMessages.innerHTML += `<div class="ai-message">AI: ${data.message}</div>`;
+            } else {
+                chatbotMessages.innerHTML += `<div class="error-message">Error: ${data.error || "Unknown error"}</div>`;
+            }
         } catch (err) {
             chatbotMessages.innerHTML += `<div class="error-message">Error: ${err.message}</div>`;
-            console.error("Fetch error:", err);
         }
-        
-        
     });
 });
