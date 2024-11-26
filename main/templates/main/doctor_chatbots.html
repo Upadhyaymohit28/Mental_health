@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Chatbots</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h3>Your Doctors</h3>
+    <ul>
+        <li>
+            <p>Dr. Jane Smith, a psychiatrist specializing in anxiety and depression.</p>
+            <button onclick="startDoctorChat(1)">Chat with Dr. Jane</button>
+        </li>
+        <li>
+            <p>Dr. John Doe, a psychiatrist focused on cognitive behavioral therapy.</p>
+            <button onclick="startDoctorChat(2)">Chat with Dr. John</button>
+        </li>
+        <li>
+            <p>Dr. Emily White, a psychiatrist with expertise in mindfulness and stress management.</p>
+            <button onclick="startDoctorChat(3)">Chat with Dr. Emily</button>
+        </li>
+    </ul>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container" style="display: none;">
+        <h4>Chat with AI</h4>
+        <div id="chatbot-messages"></div>
+        <form id="chatbot-form">
+            <input type="text" id="chatbot-input" placeholder="Type your message..." required>
+            <button type="submit">Send</button>
+        </form>
+        <input type="hidden" id="doctor-id" value="">
+        <button onclick="document.getElementById('chatbot-container').style.display = 'none';">Close</button>
+    </div>
+
+    <!-- Link JavaScript File -->
+    <script src="{% static 'js/doctor_chatbots.js' %}"></script>
+</body>
+</html>

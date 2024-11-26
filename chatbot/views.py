@@ -1,4 +1,3 @@
-
 import logging
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -10,37 +9,79 @@ from datetime import datetime, timedelta
 logger = logging.getLogger(__name__)
 
 # Set your OpenAI API key
-openai.api_key = "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"
+openai.api_key = "open ai key"
+
+# Session tracker for doctor chats
+conversation_start_time = {}
+
+# Doctor-specific configurations
+DOCTOR_PROFILES = {
+    1: "Dr. Jane Smith, a psychiatrist specializing in anxiety and depression.",
+    2: "Dr. John Doe, a psychiatrist focused on cognitive behavioral therapy.",
+    3: "Dr. Emily White, a psychiatrist with expertise in mindfulness and stress management.",
+}
 @csrf_exempt
 def chatbot_response(request):
-    logger.debug("Entering chatbot_response function")
+    global conversation_start_time
+    logger.info("Entering chatbot_response function")
+
     if request.method == 'POST':
         try:
             # Parse request data
             data = json.loads(request.body)
-            logger.debug(f"Received data: {data}")
+            user_message = data.get('message', '').strip()
+            doctor_id = int(data.get('doctor_id')) if data.get('doctor_id') else None
 
-            # Validate user message
-            user_message = data.get('message', '').strip().strip()
             if not user_message:
                 logger.error("Message is empty")
                 return JsonResponse({"error": "Message cannot be empty"}, status=400)
 
-            # Default system message for the AI
-            system_message = (
-                "You are a professional and empathetic assistant for a mental health platform. "
-                "You provide support on mindfulness, stress management, and emotional well-being. "
-                "Additionally, always remind users that they can book an appointment with licensed mental health professionals on this platform."
-            )
+            if doctor_id:
+                # Validate doctor ID
+                if doctor_id not in DOCTOR_PROFILES:
+                    return JsonResponse({"error": "Invalid doctor ID provided."}, status=400)
 
-            # Default system message for the AI
-            system_message = (
-                "You are a professional and empathetic assistant for a mental health platform. "
-                "You provide support on mindfulness, stress management, and emotional well-being. "
-                "Additionally, always remind users that they can book an appointment with licensed mental health professionals on this platform."
-            )
+                # Handle doctor-specific chat logic
+                if doctor_id not in conversation_start_time:
+                    conversation_start_time[doctor_id] = datetime.now()
 
-            # Call OpenAI API
+                if datetime.now() - conversation_start_time[doctor_id] > timedelta(minutes=15):
+                    conversation_start_time.pop(doctor_id)  # Clear expired session
+                    return JsonResponse({
+                        "message": "Your session with the doctor has ended. Please book an appointment for further assistance."
+                    })
+
+                system_message = (
+                    f"You are {DOCTOR_PROFILES[doctor_id]}. "
+                    "Converse as the doctor would, and discuss only topics related to mental health. "
+                    "Do not provide medical diagnoses or unrelated advice."
+                )
+            else:
+                # General chatbot logic
+                system_message = (
+                    "You are a professional and empathetic assistant for a mental health platform. "
+                    "Provide support on mindfulness, stress management, and emotional well-being. "
+                    "Suggest available doctors for specific queries and answer questions about subscriptions and benefits of the app."
+                )
+
+                # Handle general queries
+                keywords_subscription = ["subscription", "pricing", "benefits", "features"]
+                if any(keyword in user_message.lower() for keyword in keywords_subscription):
+                    return JsonResponse({
+                        "message": (
+                            "Our app offers personalized mental health support, mood tracking, mindfulness exercises, "
+                            "and access to licensed professionals. You can explore our subscription plans on the 'Pricing' page."
+                        )
+                    })
+
+                if "doctor" in user_message.lower():
+                    doctor_options = ", ".join([f"{doc_id}: {doc}" for doc_id, doc in DOCTOR_PROFILES.items()])
+                    return JsonResponse({
+                        "message": f"We have the following doctors available:\n{doctor_options}. "
+                                   "Please provide the doctor number to start a conversation."
+                    })
+
+            # Call OpenAI API for the AI's response
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
@@ -51,42 +92,13 @@ def chatbot_response(request):
                 temperature=0.7,
             )
 
-            # Extract AI response
-            ai_message = response['choices'][0]['message']['content'].strip()
             ai_message = response['choices'][0]['message']['content'].strip()
             logger.debug(f"AI Response: {ai_message}")
-
-            # Logic for appointment suggestions
-            booking_link = "https://www.mentalhealthapp.com/book-appointment"
-            keywords = ["doctor", "appointment", "meet doctor", "help from professional"]
-
-            if any(keyword in user_message.lower() for keyword in keywords):
-                ai_message = (
-                    "We have licensed mental health professionals available to support you. "
-                    f"You can book an appointment with one of our doctors here: [Book an Appointment]({booking_link}). "
-                    "If you'd like, I can guide you on how to proceed further."
-                )
-
-
-            # Logic for appointment suggestions
-            booking_link = "https://www.mentalhealthapp.com/book-appointment"
-            keywords = ["doctor", "appointment", "meet doctor", "help from professional"]
-
-            if any(keyword in user_message.lower() for keyword in keywords):
-                ai_message = (
-                    "We have licensed mental health professionals available to support you. "
-                    f"You can book an appointment with one of our doctors here: [Book an Appointment]({booking_link}). "
-                    "If you'd like, I can guide you on how to proceed further."
-                )
-
             return JsonResponse({"message": ai_message})
 
         except openai.error.OpenAIError as e:
             logger.error(f"OpenAI API error: {e}")
             return JsonResponse({"error": f"OpenAI API error: {str(e)}"}, status=500)
-        except json.JSONDecodeError as e:
-            logger.error(f"JSON Decode Error: {e}")
-            return JsonResponse({"error": "Invalid JSON format"}, status=400)
         except json.JSONDecodeError as e:
             logger.error(f"JSON Decode Error: {e}")
             return JsonResponse({"error": "Invalid JSON format"}, status=400)

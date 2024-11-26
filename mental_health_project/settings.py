@@ -162,3 +162,4 @@ MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",  # Add other origins as needed
 ]
+DEBUG_PROPAGATE_EXCEPTIONS = True
