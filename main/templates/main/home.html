@@ -115,7 +115,7 @@
                         aiMessageElem.textContent = `AI: ${data.message}`;
                         chatbotMessages.appendChild(aiMessageElem);
                     } else {
-                        throw new Error("Failed to get a response from the chatbot.");
+                        throw new Error(`Failed to get a response from the chatbot: ${data.error}}`);
                     }
                 } catch (error) {
                     console.error(error);
