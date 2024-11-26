@@ -1,9 +1,10 @@
 import logging
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import openai
-from datetime import datetime, timedelta
+from openai import OpenAI
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -96,7 +97,7 @@ def chatbot_response(request):
             logger.debug(f"AI Response: {ai_message}")
             return JsonResponse({"message": ai_message})
 
-        except openai.error.OpenAIError as e:
+        except openai.OpenAIError as e:
             logger.error(f"OpenAI API error: {e}")
             return JsonResponse({"error": f"OpenAI API error: {str(e)}"}, status=500)
         except json.JSONDecodeError as e:

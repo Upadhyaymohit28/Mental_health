@@ -13,16 +13,18 @@ def main():
         from django.core.management import call_command
         django.setup()
 
-        # 自动执行 populate_content 命令
-        try:
-            call_command('populate_content')
-            print("Successfully executed populate_content.")
-        except Exception as e:
-            print(f"Error executing populate_content: {e}")
-
         # 执行管理命令
         from django.core.management import execute_from_command_line
         execute_from_command_line(sys.argv)
+
+        # 自动执行 populate_xxx 命令
+        try:
+            call_command('populate_content')
+            call_command('populate_challenges')
+            call_command('populate_support')
+            print("Successfully executed populate_content.")
+        except Exception as e:
+            print(f"Error executing populate_content: {e}")
 
     except ImportError as exc:
         raise ImportError(
