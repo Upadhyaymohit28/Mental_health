@@ -1,16 +1,20 @@
 
 import logging
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import openai
-from datetime import datetime, timedelta
+from openai import OpenAI
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
 # Set your OpenAI API key
-openai.api_key = "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"
+client = OpenAI(
+    api_key="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",  # This is the default and can be omitted
+)
+
 @csrf_exempt
 def chatbot_response(request):
     logger.debug("Entering chatbot_response function")
@@ -33,15 +37,8 @@ def chatbot_response(request):
                 "Additionally, always remind users that they can book an appointment with licensed mental health professionals on this platform."
             )
 
-            # Default system message for the AI
-            system_message = (
-                "You are a professional and empathetic assistant for a mental health platform. "
-                "You provide support on mindfulness, stress management, and emotional well-being. "
-                "Additionally, always remind users that they can book an appointment with licensed mental health professionals on this platform."
-            )
-
             # Call OpenAI API
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": system_message},
@@ -52,7 +49,6 @@ def chatbot_response(request):
             )
 
             # Extract AI response
-            ai_message = response['choices'][0]['message']['content'].strip()
             ai_message = response['choices'][0]['message']['content'].strip()
             logger.debug(f"AI Response: {ai_message}")
 
@@ -81,12 +77,9 @@ def chatbot_response(request):
 
             return JsonResponse({"message": ai_message})
 
-        except openai.error.OpenAIError as e:
+        except openai.OpenAIError as e:
             logger.error(f"OpenAI API error: {e}")
             return JsonResponse({"error": f"OpenAI API error: {str(e)}"}, status=500)
-        except json.JSONDecodeError as e:
-            logger.error(f"JSON Decode Error: {e}")
-            return JsonResponse({"error": "Invalid JSON format"}, status=400)
         except json.JSONDecodeError as e:
             logger.error(f"JSON Decode Error: {e}")
             return JsonResponse({"error": "Invalid JSON format"}, status=400)
