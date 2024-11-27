@@ -2,7 +2,21 @@ from datetime import date
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Badge, Streak, DailyChallenge
+from .models import ChallengeTemplate, Badge
 
+def gamification_home(request):
+    """
+    Gamification 首页视图函数
+    """
+    # 从模型中获取每日挑战和徽章信息
+    daily_challenges = ChallengeTemplate.objects.filter(category='Daily')[:5]  # 只取前5个每日挑战
+    user_badges = Badge.objects.filter(user=request.user)  # 获取当前用户的徽章
+
+    # 渲染模板并传递数据
+    return render(request, 'gamification/gamification_home.html', {
+        'daily_challenges': daily_challenges,
+        'user_badges': user_badges,
+    })
 
 @login_required
 def badges(request):

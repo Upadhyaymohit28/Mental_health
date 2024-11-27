@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamification Home</title>
+</head>
+<body>
+    <h1>Gamification Home</h1>
+    <h2>Daily Challenges</h2>
+    <ul>
+        {% for challenge in daily_challenges %}
+            <li>{{ challenge.name }} - {{ challenge.description }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Your Badges</h2>
+    <ul>
+        {% for badge in user_badges %}
+            <li>{{ badge.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

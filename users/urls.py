@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *  
+from . import views
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -15,4 +16,5 @@ urlpatterns = [
     path('videos/', video_recommendations, name='video_recommendations'),
     path('videos/<int:content_id>/', recommendation_detail, name='recommendation_detail'), 
     path('consultation/', consultation, name='ai_consultation'),
+    path('gamification/', gamification, name='gamification'),
 ]

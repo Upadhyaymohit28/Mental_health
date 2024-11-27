@@ -8,6 +8,7 @@ from .main_views import (
     mood_tracking,  
     video_recommendations,  
     consultation,
+    gamification,
     recommendation_detail,   
 )
 from .notifications import (
@@ -32,5 +33,6 @@ __all__ = [
     "mood_tracking",  
     "video_recommendations",  
     "consultation",  
+    "gamification",
     "recommendation_detail",
 ]
