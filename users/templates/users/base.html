@@ -51,6 +51,13 @@
                             <span>Consultation</span>
                         </a>
                     </li>
+
+                    <li class="{% if active_menu == 'Gamification' %}active{% endif %}">
+                        <a href="{% url 'gamification' %}">
+                            <i class="fas fa-trophy"></i> <!-- 使用 FontAwesome 的奖杯图标 -->
+                            <span>Gamification</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         

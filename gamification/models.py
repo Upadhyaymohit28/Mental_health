@@ -36,6 +36,6 @@ class ChallengeTemplate(models.Model):
     task = models.CharField(max_length=255)  # The challenge description
     difficulty = models.CharField(max_length=50, choices=[('Easy', 'Easy'), ('Medium', 'Medium'), ('Hard', 'Hard')],
                                   default='Easy')
-
+    category = models.CharField(max_length=50, default="General")
     def __str__(self):
         return f"{self.task} ({self.difficulty})"

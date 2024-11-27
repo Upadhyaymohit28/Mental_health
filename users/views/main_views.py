@@ -16,6 +16,8 @@ import random
 from content.models import EducationalContent
 from moodtracking.forms import MoodLogForm
 from django.shortcuts import redirect
+from gamification.models import ChallengeTemplate, Badge
+
 
 def signup(request):
     if request.method == 'POST':
@@ -106,11 +108,15 @@ def dashboard(request):
 
     # 从 MoodLog 表中获取用户最近的 5 条心情记录
     recent_mood_logs = MoodLog.objects.filter(user=request.user).order_by('-timestamp')[:5]
+    daily_challenges = ChallengeTemplate.objects.filter(category='Daily')[:3]  # 示例：每日挑战
+    user_badges = Badge.objects.filter(user=request.user)  # 用户徽章
 
     return render(request, 'users/pages/dashboard.html', {
         "active_menu": "Dashboard",
-        "random_video": random_video,  # 将随机视频传递到模板
-        "recent_mood_logs": recent_mood_logs,  # 将心情记录传递到模板
+        "recent_mood_logs": recent_mood_logs,
+        "random_video": random_video,
+        "daily_challenges": daily_challenges,
+        "user_badges": user_badges,
     })
 
 
@@ -163,4 +169,10 @@ def consultation(request):
     """Consultation 视图"""
     return render(request, 'users/pages/consultation.html', {
         "active_menu": "AIConsultation",  # 动态高亮侧边栏菜单项
+    })
+
+def gamification(request):
+    # 加载页面数据
+    return render(request, "users/pages/gamification.html", {
+        "active_menu": "Gamification",  # 确保侧边栏高亮 Gamification
     })
