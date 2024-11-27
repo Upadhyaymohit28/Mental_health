@@ -8,11 +8,12 @@
 <body>
     <h1>Gamification Home</h1>
     <h2>Daily Challenges</h2>
-    <ul>
-        {% for challenge in daily_challenges %}
-            <li>{{ challenge.name }} - {{ challenge.description }}</li>
-        {% endfor %}
-    </ul>
+    {% if challenge %}
+        <p><strong>Task:</strong> {{ challenge.task }}</p>
+        <p>Status: {{ challenge.is_completed|yesno:"Completed,Incomplete" }}</p>
+    {% else %}
+        <p>No challenge assigned for today.</p>
+    {% endif %}
 
     <h2>Your Badges</h2>
     <ul>
