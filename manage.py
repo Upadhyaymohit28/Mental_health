@@ -21,6 +21,7 @@ def main():
         try:
             call_command('populate_content')
             call_command('populate_challenges')
+            call_command('generate_challenges')
             call_command('populate_support')
             print("Successfully executed populate_content.")
         except Exception as e:
