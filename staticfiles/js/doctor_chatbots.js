@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const doctorId = doctorIdField ? doctorIdField.value : null;
 
         try {
-            const response = await fetch("/api/chatbot/", {
+            const response = await fetch("/chatbot/chatbot/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -4,13 +4,14 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import openai
-from openai import OpenAI
+from datetime import datetime, timedelta
+
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
 # Set your OpenAI API key
-openai.api_key = "open ai key"
+openai.api_key = "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"
 
 # Session tracker for doctor chats
 conversation_start_time = {}
