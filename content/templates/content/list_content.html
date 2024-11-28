@@ -1,9 +1,80 @@
-<h1>Educational Resources</h1>
-<ul>
-    {% for content in contents %}
-    <li>
-        <a href="{% url 'content_detail' content.id %}">{{ content.title }}</a>
-        <p>Type: {{ content.content_type }} | Category: {{ content.category }}</p>
-    </li>
-    {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Resources</title>
+    <style>
+        /* 主容器样式 */
+        .content-container {
+            display: flex;
+            flex-wrap: wrap; /* 启用换行 */
+            gap: 20px; /* 卡片之间的间距 */
+            justify-content: space-between; /* 保持错落分布 */
+        }
+        /* 卡片样式 */
+        .content-item {
+            box-sizing: border-box;
+            background-color: #ffffff; /* 背景统一为白色 */
+            border-radius: 12px; /* 圆角 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08); /* 更淡的阴影 */
+            padding: 10px; /* 内边距减少 */
+            height: 195px; /* 矮一些的固定高度 */
+            transition: transform 0.2s, box-shadow 0.2s, width 0.3s;
+            display: flex;
+            flex-direction: column; /* 纵向排列内容 */
+        }
+        .content-item:hover {
+            transform: scale(1.03); /* 鼠标悬停放大效果 */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12); /* 加深阴影 */
+        }
+    </style>
+</head>
+<body>
+    <h1>Educational Resources</h1>
+    <div class="content-container" id="content-container">
+        {% for content in contents %}
+        <!-- 卡片容器 -->
+        <div class="content-item" data-content-type="{{ content.content_type }}">
+            {% include 'content/content_detail.html' with content=content only %}
+        </div>
+        {% empty %}
+        <p>No educational resources available at the moment.</p>
+        {% endfor %}
+    </div>
+    <script>
+        // 随机宽度生成函数，根据内容类型
+        function getRandomWidth(contentType) {
+            let widths;
+
+            if (contentType === 'Video') {
+                // 视频的宽度范围 33% 到 50%
+                widths = ['calc(33% - 20px)', 'calc(40% - 20px)', 'calc(50% - 20px)'];
+            } else {
+                // 非视频的宽度范围 25% 到 50%
+                widths = ['calc(25% - 20px)', 'calc(33% - 20px)', 'calc(40% - 20px)', 'calc(50% - 20px)'];
+            }
+            return widths[Math.floor(Math.random() * widths.length)];
+        }
+        // 随机化内容顺序
+        function shuffleElements(container) {
+            const elements = Array.from(container.children);
+            elements.sort(() => Math.random() - 0.5); // 打乱顺序
+            elements.forEach(element => container.appendChild(element)); // 重新排列
+        }
+        // 设置每个卡片的随机宽度，并随机排序
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('content-container');
+            const cards = document.querySelectorAll('.content-item');
+            // 设置随机宽度
+            cards.forEach(card => {
+                const contentType = card.getAttribute('data-content-type'); // 获取内容类型（视频或非视频）
+                const width = getRandomWidth(contentType);
+                card.style.flex = `1 1 ${width}`; // 设置随机宽度
+            });
+            // 随机化内容顺序
+            shuffleElements(container);
+        });
+    </script>
+</body>
+</html>

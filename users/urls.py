@@ -14,7 +14,6 @@ urlpatterns = [
     path('profile/update/', update_profile, name='update_profile'),
     path('mood-tracking/', mood_tracking, name='mood_tracking'),
     path('videos/', video_recommendations, name='video_recommendations'),
-    path('videos/<int:content_id>/', recommendation_detail, name='recommendation_detail'), 
     path('consultation/', consultation, name='ai_consultation'),
     path('gamification/', gamification, name='gamification'),
 ]

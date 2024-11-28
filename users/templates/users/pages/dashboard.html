@@ -3,6 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -150,22 +151,6 @@
             margin-bottom: 20px;
         }
 
-        .input-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: auto; /* 将其推到底部 */
-        }
-
-        .input-area textarea {
-            flex: 1;
-            min-height: 50px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 14px;
-        }
-
         .send-button {
             background-color: var(--theme-color);
             color: #fff;
@@ -229,25 +214,25 @@
                     <button onclick="location.href='{% url 'mood_tracking' %}';">Log Your Mood</button>
                 </div>
                 <!-- 视频推荐内容 -->
-                <div class="tab-pane" id="video-recommendation">
-                    <p>Explore videos tailored to enhance your mental health journey.</p>
-                    
-                    <!-- 显示随机推荐的视频 -->
-                    {% if random_video %}
-                        <div class="video-recommendation">
-                            <h3>{{ random_video.title }}</h3>
-                            <p>{{ random_video.body }}</p>
-                            <a href="{{ random_video.source_url }}" target="_blank" class="btn btn-primary">
-                                Watch Video
-                            </a>
-                        </div>
-                    {% else %}
-                        <p>No videos available at the moment.</p>
-                    {% endif %}
-                    
-                    <!-- 原有按钮 -->
-                    <button onclick="location.href='{% url 'video_recommendations' %}';">Go to Videos</button>
-                </div>
+                <!-- 视频推荐内容 -->
+<div class="tab-pane" id="video-recommendation" style="position: relative;">
+
+    <!-- 显示随机推荐的视频 -->
+    {% if random_video %}
+        <div class="video-recommendation">
+            {% include 'content/content_detail.html' with content=random_video %}
+        </div>
+    {% else %}
+        <p>No videos available at the moment.</p>
+    {% endif %}
+
+    <!-- 图标形式的按钮，增加提示文字 -->
+    <a href="{% url 'video_recommendations' %}" 
+       style="position: absolute; top: 10px; right: 10px; font-size: 14px; text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--theme-color);">
+        <span>View More</span>
+        &#x279C; <!-- Unicode右箭头图标 -->
+    </a>
+</div>
             </div>
         </div>
 
@@ -255,16 +240,66 @@
 <div class="card ai-consultation" style="background-color: #396964; color: white; border-radius: 15px; padding: 20px;">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="color: white; font-size: 1.8rem; margin: 0;">Talk to Our AI Wellness Companion</h3>
-        <img src="/static/images/A_cartoon-style_robot.png" alt="Robot Icon" style="width: 100px; height: auto;">
+        <img src="{% static 'images/A_cartoon-style_robot.png' %}" alt="Robot Icon" style="width: 100px; height: auto;">
     </div>
     <p style="margin: 15px 0 0; font-size: 0.9rem; line-height: 1.5; text-align: left; color: white;">
-        Engage in a conversation with our AI wellness companion for thoughtful guidance and support. We're here to help you feel your best.
+        Engage in a conversation with our AI wellness companion for thoughtful guidance and support. Choose a doctor below and click "Start Chat" to begin.
     </p>
     <div class="input-area" style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
-        <textarea placeholder="Type your question here..." style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 1rem;"></textarea>
-        <button style="background-color: #ffb703; color: white; padding: 10px 15px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;" onclick="location.href='{% url 'ai_consultation' %}';">Send</button>
+        <!-- 下拉菜单 -->
+        <select id="doctor-select" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 1rem;" onchange="updateDoctorInfo()">
+            <option value="" disabled selected>Select a Doctor</option>
+            <option value="1">Dr. Jane Smith</option>
+            <option value="2">Dr. John Doe</option>
+            <option value="3">Dr. Emily White</option>
+        </select>
+        <!-- 按钮 -->
+        <button style="background-color: #ffb703; color: white; padding: 10px 15px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;" onclick="startChat()">
+            Start Chat
+        </button>
     </div>
+
+    <!-- 显示医生专业 -->
+    <p id="doctor-info" style="margin-top: 20px; font-size: 1rem; color: white; text-align: center;">
+        Select a doctor to see their expertise.
+    </p>
 </div>
+
+<script>
+    // 定义医生信息
+    const doctorInfo = {
+        1: "Specializes in Anxiety and Depression.",
+        2: "Focuses on Cognitive Behavioral Therapy.",
+        3: "Expertise in Mindfulness and Stress Management."
+    };
+
+    // 更新医生专业领域信息
+    function updateDoctorInfo() {
+        const doctorSelect = document.getElementById("doctor-select");
+        const doctorInfoText = document.getElementById("doctor-info");
+        const selectedDoctorId = doctorSelect.value;
+        
+        if (selectedDoctorId) {
+            doctorInfoText.textContent = doctorInfo[selectedDoctorId];  // 显示专业领域
+        } else {
+            doctorInfoText.textContent = "Select a doctor to see their expertise.";  // 默认提示
+        }
+    }
+
+    // 按钮点击事件，跳转到聊天页面，并传递医生 ID
+    function startChat() {
+        const doctorSelect = document.getElementById("doctor-select");
+        const selectedDoctorId = doctorSelect.value;
+
+        if (selectedDoctorId) {
+            // 跳转到聊天页面，并传递医生 ID
+            location.href = `{% url 'ai_consultation' %}?doctor_id=${selectedDoctorId}`;
+        } else {
+            alert("Please select a doctor before starting the chat.");
+        }
+    }
+</script>
+
 
           
     </section>
