@@ -145,24 +145,12 @@ def video_recommendations(request):
     try:
         contents = list(EducationalContent.objects.all())  # 强制加载 QuerySet
         print(f"Contents count in view: {len(contents)}")
-        for content in contents:
-            print(f"Title: {content.title}, Category: {content.category}, URL: {content.source_url}")
     except Exception as e:
         print(f"Error querying EducationalContent: {e}")
     return render(request, 'users/pages/video_recommendations.html', {
         "active_menu": "VideoRecommendations",
         "contents": contents,
     })
-
-from django.shortcuts import render, get_object_or_404
-
-def recommendation_detail(request, content_id):
-    content = get_object_or_404(EducationalContent, id=content_id)
-    return render(request, 'content_detail.html', {
-        'content': content,
-        "active_menu": "VideoRecommendations",
-    })
-
 
 @login_required
 def consultation(request):

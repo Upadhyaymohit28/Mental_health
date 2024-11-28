@@ -1,27 +1,13 @@
+{% extends 'users/base.html' %}
+
+{% block title %}
+    Mood Tracking
+{% endblock %}
+
 {% block content %}
-<h1>Video Recommendations</h1>
-<p>Explore videos tailored to your mental health journey.</p>
 
-<!-- 调试内容 -->
-<p>Total contents: {{ contents|length }}</p> <!-- 显示内容数量 -->
-<ul>
-    {% for content in contents %}
-        <li>{{ content }}</li> <!-- 简单显示内容对象 -->
-    {% endfor %}
-</ul>
+<div>
+    {% include 'content/list_content.html' %}
+</div>
 
-<!-- 渲染数据 -->
-{% if contents %}
-    <ul>
-        {% for content in contents %}
-            <li>
-                <h3>{{ content.title }}</h3>
-                <p>{{ content.body }}</p>
-                <p><a href="{{ content.source_url }}" target="_blank">Watch/Read more</a></p>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No recommendations available at the moment.</p>
-{% endif %}
 {% endblock %}

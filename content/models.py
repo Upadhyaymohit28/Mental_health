@@ -13,8 +13,12 @@ class EducationalContent(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     source_url = models.URLField(blank=True, null=True)
 
+    youtube_title = models.CharField(max_length=200, blank=True, null=True)
+    youtube_description = models.TextField(blank=True, null=True)
+    youtube_thumbnail = models.URLField(blank=True, null=True)
+
     def __str__(self):
         return self.title
 
     class Meta:
-        app_label = 'content'  # 将 'content' 替换为实际的 app 名称
+        app_label = 'content'
