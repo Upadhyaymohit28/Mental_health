@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 # Set your OpenAI API key
 openai.api_key = "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"
-
 # Session tracker for doctor chats
 conversation_start_time = {}
 
