@@ -60,9 +60,6 @@ class Command(BaseCommand):
             print("Running populate_challenges...")
             self.run_management_command('populate_challenges')
 
-            print("Running generate_challenges...")
-            self.run_management_command('generate_challenges')
-
             print("Running populate_support...")
             self.run_management_command('populate_support')
 

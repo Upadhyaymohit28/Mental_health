@@ -1,17 +1,17 @@
 {% extends 'users/base.html' %}
+{% load static %}
 
 {% block title %}
-    Mood Tracking
+    Gamification
 {% endblock %}
 
 {% block content %}
-<!-- 引用滑块部分 -->
+<div>
+    {% include 'gamification/daily_challenge.html' %}
+</div>
+
 <div>
     {% include 'gamification/badges.html' %}
 </div>
 
-<!-- 引用历史记录部分 -->
-<div>
-    {% include 'gamification/daily_challenge.html' %}
-</div>
 {% endblock %}

@@ -1,6 +1,7 @@
 # users/views.py
+from datetime import date
+import random
 
-from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -8,15 +9,11 @@ from django.contrib.auth.decorators import login_required
 from ..forms import UserProfileForm
 from ..models import UserProfile, Notification
 from moodtracking.models import MoodLog
-from django.views.decorators.http import require_POST
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
-from content.models import EducationalContent
-import random
+from django.shortcuts import render
 from content.models import EducationalContent
 from moodtracking.forms import MoodLogForm
 from django.shortcuts import redirect
-from gamification.models import ChallengeTemplate, Badge
+from gamification.models import ChallengeTemplate, Badge, DailyChallenge
 
 
 def signup(request):
@@ -29,18 +26,18 @@ def signup(request):
             user = form.save()
             # 登录新用户
             login(request, user)
-            
+
             # 创建通知
             Notification.objects.create(
                 user=user,
                 title="Welcome to the platform!",
                 description="Your account has been successfully created. Start exploring our features now.",
-                type="message",  
-                url="",  
+                type="message",
+                url="",
                 is_unread=True,
             )
             print("Notification created")
-            
+
             # 跳转到主页
             return redirect('home')
         else:
@@ -102,7 +99,7 @@ def update_profile(request):
 def dashboard(request):
     # 从 EducationalContent 表中获取所有视频内容
     all_videos = EducationalContent.objects.filter(content_type="Video")
-    
+
     # 随机选择一个视频
     random_video = random.choice(all_videos) if all_videos.exists() else None
 
@@ -159,8 +156,17 @@ def consultation(request):
         "active_menu": "AIConsultation",  # 动态高亮侧边栏菜单项
     })
 
+@login_required
 def gamification(request):
-    # 加载页面数据
-    return render(request, "users/pages/gamification.html", {
-        "active_menu": "Gamification",  # 确保侧边栏高亮 Gamification
+    """
+    Gamification 首页视图函数
+    """
+    # 从模型中获取每日挑战和徽章信息
+    today_challenge = DailyChallenge.objects.filter(user=request.user, date_assigned=date.today()).first()
+    user_badges = Badge.objects.filter(user=request.user)
+
+    # 渲染模板并传递数据
+    return render(request, 'users/pages/gamification.html', {
+        'challenge': today_challenge,
+        'badges': user_badges,
     })
