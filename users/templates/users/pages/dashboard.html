@@ -191,29 +191,14 @@
             <div class="tab-content">
                 <!-- 心情追踪内容 -->
                 <div class="tab-pane active" id="mood-tracking">
-                    <p>Monitor and manage your emotional health effectively.</p>
                 
                     <!-- 最近心情记录 -->
                     <div class="recent-mood-logs">
-                        <h3>Your Recent Mood Logs</h3>
-                        {% if recent_mood_logs %}
-                            <ul>
-                                {% for log in recent_mood_logs %}
-                                    <li>
-                                        <strong>{{ log.timestamp|date:"Y-m-d H:i" }}</strong>: 
-                                        Mood Score: {{ log.mood_score }}/10 - 
-                                        {{ log.description }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p>No mood logs available. Start tracking your mood!</p>
-                        {% endif %}
+                        {% include 'moodtracking/score_history.html' with content=random_video %}
                     </div>
                 
                     <button onclick="location.href='{% url 'mood_tracking' %}';">Log Your Mood</button>
                 </div>
-                <!-- 视频推荐内容 -->
                 <!-- 视频推荐内容 -->
 <div class="tab-pane" id="video-recommendation" style="position: relative;">
 

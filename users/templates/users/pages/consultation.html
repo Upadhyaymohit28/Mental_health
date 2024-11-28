@@ -4,48 +4,308 @@
 {% block title %}Consultation{% endblock %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultation</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <h1>Consultation</h1>
-    <p>Select a doctor and start chatting with our AI assistant for personalized guidance.</p>
+<div class="container">
+    <!-- 主题色背景卡片 -->
+    <div class="theme-card">
+        <!-- 医生列表 -->
+        <div class="doctor-list">
+            <h3>Your Doctors</h3>
+            <div class="doctor-item" onclick="startDoctorChat(1)"> 
+                <img class="doctor-avatar" src="{% static 'images/Jane.png' %}" alt="Dr. Jane Smith">
+                <div class="doctor-info">
+                    <span class="doctor-name">Dr. Jane Smith</span>
+                    <span class="doctor-specialty">Anxiety & Depression</span>
+                </div>
+            </div>
+            <div class="doctor-item" onclick="startDoctorChat(2)"> 
+                <img class="doctor-avatar" src="{% static 'images/John.png' %}" alt="Dr. John Doe">
+                <div class="doctor-info">
+                    <span class="doctor-name">Dr. John Doe</span>
+                    <span class="doctor-specialty">Cognitive Behavioral Therapy</span>
+                </div>
+            </div>
+            <div class="doctor-item" onclick="startDoctorChat(3)"> 
+                <img class="doctor-avatar" src="{% static 'images/Emily.png' %}" alt="Dr. Emily White">
+                <div class="doctor-info">
+                    <span class="doctor-name">Dr. Emily White</span>
+                    <span class="doctor-specialty">Mindfulness</span>
+                </div>
+            </div>
+        </div>
 
-    <!-- Doctors List -->
-    <h3>Your Doctors</h3>
-    <ul>
-        <li>
-            <p>Dr. Jane Smith - Specializes in anxiety and depression.</p>
-            <button onclick="startDoctorChat(1)">Chat with Dr. Jane</button>
-        </li>
-        <li>
-            <p>Dr. John Doe - Focuses on cognitive behavioral therapy.</p>
-            <button onclick="startDoctorChat(2)">Chat with Dr. John</button>
-        </li>
-        <li>
-            <p>Dr. Emily White - Expertise in mindfulness and stress management.</p>
-            <button onclick="startDoctorChat(3)">Chat with Dr. Emily</button>
-        </li>
-    </ul>
-
-    <!-- Chatbot Container -->
-    <div id="chatbot-container" style="display: none;">
-        <h4>Chat with AI</h4>
-        <div id="chatbot-messages" class="chat-messages"></div>
-        <form id="chatbot-form">
-            <input type="text" id="chatbot-input" placeholder="Type your message..." required>
-            <button type="submit">Send</button>
-        </form>
-        <input type="hidden" id="doctor-id" value="">
-        <button onclick="document.getElementById('chatbot-container').style.display = 'none';">Close</button>
+        <!-- 聊天框 -->
+        <div class="chat-card">
+            <div class="chat-header" id="chat-header">Select a doctor to start chatting...</div>
+            <div id="chatbot-messages" class="chat-messages empty">
+                <p>No messages yet</p>
+            </div>
+            <form id="chatbot-form" class="chat-input" style="display: none;">
+                <input type="hidden" id="doctor-id" name="doctor_id" value="">
+                <input type="text" id="chatbot-input" placeholder="Type your message..." required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
     </div>
+</div>
+<script>
+    const doctorDetails = {
+        1: {
+            name: "Dr. Jane Smith",
+            specialty: "Anxiety & Depression",
+            image: "{% static 'images/Jane.png' %}",
+            description: "Expert in managing anxiety and depression through therapy."
+        },
+        2: {
+            name: "Dr. John Doe",
+            specialty: "Cognitive Behavioral Therapy",
+            image: "{% static 'images/John.png' %}",
+            description: "Specializes in CBT to help with various mental health conditions."
+        },
+        3: {
+            name: "Dr. Emily White",
+            specialty: "Mindfulness",
+            image: "{% static 'images/Emily.png' %}",
+            description: "Focuses on mindfulness techniques for stress management."
+        }
+    };
+</script>
+<script src="{% static 'js/doctor_chatbots.js' %}"></script>
+<script src="{% static 'js/doctor_choose.js' %}"></script>
 
-    <script src="{% static 'js/doctor_chatbots.js' %}"></script>
-</body>
-</html>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        padding: 20px;
+    }
+
+    .theme-card {
+        width: 1300px;
+        height: 100%;
+        background-color: var(--theme-color);
+        color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .doctor-list {
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .doctor-item {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-align: left;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .doctor-item:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .doctor-item.selected {
+        background-color: #ffffff;
+        color: #333;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .doctor-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%; /* 圆形样式 */
+        object-fit: cover; /* 确保图片不拉伸 */
+        border: 2px solid #fff; /* 添加白色边框 */
+    }
+
+    .doctor-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .doctor-name {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .doctor-specialty {
+        font-size: 14px;
+    }
+
+    .chat-card {
+        flex: 1;
+        background-color: #ffffff;
+        color: #333;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+.chat-header {
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* 医生信息部分 */
+.doctor-chat-info {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* 头像和医生信息之间的间隔 */
+}
+
+/* 名字和专长部分 */
+.doctor-name-specialty {
+    display: flex;
+    gap: 10px; /* 控制名字和专长之间的间距 */
+}
+
+/* 医生名字 */
+.doctor-chat-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* 黑色 */
+}
+
+/* 医生专长 */
+.doctor-chat-specialty {
+    font-size: 14px;
+    font-style: italic; /* 斜体 */
+    color: #333; /* 黑色 */
+    font-weight: normal; /* 不加粗 */
+}
+
+
+.doctor-description {
+    font-size: 12px;
+    font-style: italic; /* 斜体 */
+    color: #777; /* 灰色 */
+}
+
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .chat-messages.empty {
+        justify-content: center;
+        align-items: center;
+        color: #999;
+        font-size: 16px;
+    }
+    
+    /* 消息容器样式 */
+.message-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+/* 医生消息靠左显示 */
+.doctor-message {
+    flex-direction: row; /* 默认从左到右 */
+}
+
+/* 用户消息靠右显示 */
+.user-message {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+/* 头像样式 */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 10px;
+    object-fit: cover;
+}
+
+/* 用户字母头像样式 */
+.user-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* 消息文本样式 */
+.message-text {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 60%;
+    word-wrap: break-word;
+}
+
+/* 不同背景颜色 */
+.doctor-message .message-text {
+    background-color: #e6f7ff;
+}
+
+.user-message .message-text {
+    background-color: #d9f7be;
+}
+
+    
+    
+
+    .chat-input {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .chat-input button {
+        padding: 10px 20px;
+        background-color: var(--theme-color);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .chat-input button:hover {
+        background-color: #0056b3;
+    }
+</style>
 {% endblock %}

@@ -1,7 +1,6 @@
 # users/views.py
-from datetime import date
-import random
 
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -9,10 +8,15 @@ from django.contrib.auth.decorators import login_required
 from ..forms import UserProfileForm
 from ..models import UserProfile, Notification
 from moodtracking.models import MoodLog
-from django.shortcuts import render
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
+from content.models import EducationalContent
+import random
 from content.models import EducationalContent
 from moodtracking.forms import MoodLogForm
 from django.shortcuts import redirect
+from datetime import date
 from gamification.models import ChallengeTemplate, Badge, DailyChallenge
 
 
@@ -26,18 +30,18 @@ def signup(request):
             user = form.save()
             # 登录新用户
             login(request, user)
-
+            
             # 创建通知
             Notification.objects.create(
                 user=user,
                 title="Welcome to the platform!",
                 description="Your account has been successfully created. Start exploring our features now.",
-                type="message",
-                url="",
+                type="message",  
+                url="",  
                 is_unread=True,
             )
             print("Notification created")
-
+            
             # 跳转到主页
             return redirect('home')
         else:
@@ -99,18 +103,16 @@ def update_profile(request):
 def dashboard(request):
     # 从 EducationalContent 表中获取所有视频内容
     all_videos = EducationalContent.objects.filter(content_type="Video")
-
+    
     # 随机选择一个视频
     random_video = random.choice(all_videos) if all_videos.exists() else None
 
-    # 从 MoodLog 表中获取用户最近的 5 条心情记录
-    recent_mood_logs = MoodLog.objects.filter(user=request.user).order_by('-timestamp')[:5]
+
     daily_challenges = ChallengeTemplate.objects.filter(category='Daily')[:3]  # 示例：每日挑战
     user_badges = Badge.objects.filter(user=request.user)  # 用户徽章
 
     return render(request, 'users/pages/dashboard.html', {
         "active_menu": "Dashboard",
-        "recent_mood_logs": recent_mood_logs,
         "random_video": random_video,
         "daily_challenges": daily_challenges,
         "user_badges": user_badges,

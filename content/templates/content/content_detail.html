@@ -86,7 +86,7 @@
     </style>
 </head>
 <body>
-    <div class="content-card">
+    <div class="content-card" onclick="window.open('{{ content.source_url }}', '_blank')" >
         {% if content.content_type == "Video" %}
         <!-- 视频类型布局 -->
         <div class="content-video">
