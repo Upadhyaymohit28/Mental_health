@@ -1,0 +1,19 @@
+<h1>Mood History</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Mood Score</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mood_log in mood_logs %}
+        <tr>
+            <td>{{ mood_log.timestamp|date:"Y-m-d H:i" }}</td>
+            <td>{{ mood_log.mood_score }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'log_mood' %}">Log a New Mood</a>

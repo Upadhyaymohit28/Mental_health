@@ -5,13 +5,56 @@
 {% endblock %}
 
 {% block content %}
-<!-- 引用滑块部分 -->
-<div>
-    {% include 'moodtracking/log_mood.html' %}
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 auto;
+        max-width: 1300px;
+        display: flex;
+        justify-content: center;
+    }
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+    .log-mood {
+        background-color: var(--theme-color);
+        flex: 1;
+        max-width: 500px; /* 固定宽度 */
+    }
+    .score-history {
+        background-color: white;
+        flex: 2;
+        max-width: 700px; /* 固定宽度 */
+    }
+    .description-history {
+        background-color: var(--theme-color);
+        width: 100%;
+        margin-top: 20px; /* 与上方卡片保持间距 */
+        max-width: 1200px; /* 固定宽度 */
+    }
+</style>
+
+<!-- 第一行：Log Mood 和 Mood History -->
+<div class="container">
+    <!-- Log Mood 卡片 -->
+    <div class="card log-mood">
+        {% include 'moodtracking/log_mood.html' %}
+    </div>
+
+    <!-- Mood History 卡片 -->
+    <div class="card score-history">
+        {% include 'moodtracking/score_history.html' %}
+    </div>
 </div>
 
-<!-- 引用历史记录部分 -->
-<div>
-    {% include 'moodtracking/mood_history.html' %}
+<!-- 第二行：Description History -->
+<div class="container">
+    <div class="card description-history">
+        {% include 'moodtracking/description_history.html' %}
+    </div>
 </div>
 {% endblock %}
