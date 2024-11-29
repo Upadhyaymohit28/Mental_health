@@ -1,19 +1,124 @@
-<h1>Mood History</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Mood Score</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for mood_log in mood_logs %}
-        <tr>
-            <td>{{ mood_log.timestamp|date:"Y-m-d H:i" }}</td>
-            <td>{{ mood_log.mood_score }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="{% url 'log_mood' %}">Log a New Mood</a>
+
+
+{% if mood_logs|length < 5 %}
+<p style="color: var(--theme-color); text-align: center;">Not enough data to display a chart. Please log at least 5 mood records.</p>
+{% else %}
+<div style="max-width: 700px;">
+    <canvas id="mood-chart" width="590" height="290"></canvas>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- 插件用于显示标签 -->
+
+<script>
+// 提取 Django 模板中的 mood_logs 数据
+const moodLogs = [
+    {% for log in mood_logs %}
+    {
+        timestamp: "{{ log.timestamp|date:'Y-m-d H:i' }}",
+        mood_score: {{ log.mood_score }}
+    },
+    {% endfor %}
+];
+
+if (moodLogs.length >= 5) {
+    // 数据按时间排序后选择最近 15 条
+    const filteredLogs = moodLogs.slice(0, 15);
+    const scores = filteredLogs.map(log => log.mood_score);
+    const timestamps = filteredLogs.map(log => log.timestamp);
+
+    // 定义心情图标和描述
+    const moodIcons = {
+        1: "⛈️", // 极度低落
+        2: "🌧️", // 非常难过
+        3: "☁️", // 难过
+        4: "🌥️", // 有点难过
+        5: "⛅", // 平静
+        6: "🌤️", // 稍微开心
+        7: "🌞", // 开心
+        8: "⭐", // 非常开心
+        9: "🌟", // 激动
+        10: "✨" // 极度开心
+    };
+
+    const moodDescriptions = {
+        1: "Extremely Sad",
+        2: "Very Sad",
+        3: "Sad",
+        4: "A Bit Sad",
+        5: "Neutral",
+        6: "Content",
+        7: "Happy",
+        8: "Very Happy",
+        9: "Excited",
+        10: "Extremely Happy"
+    };
+
+    // 绘制折线图
+    const ctx = document.getElementById('mood-chart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: timestamps, // 横轴用于悬停显示时间
+            datasets: [{
+                label: '', // 不显示图例
+                data: scores,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                pointRadius: 0, // 隐藏默认点
+                hoverRadius: 0, // 禁用悬停时点的放大
+                tension: 0.4 // 平滑曲线
+            }]
+        },
+        options: {
+            responsive: true, // 响应式布局
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false // 去掉图例
+                },
+                tooltip: {
+                    enabled: true, // 启用悬停提示
+                    callbacks: {
+                        title: function(context) {
+                            // 显示时间
+                            return `Time: ${context[0].label}`;
+                        },
+                        label: function(context) {
+                            const score = context.raw;
+                            const description = moodDescriptions[score];
+                            return `${description} (Mood Score: ${score})`;
+                        }
+                    }
+                },
+                datalabels: {
+                    align: 'center', // 图标位置在点上
+                    anchor: 'center',
+                    font: {
+                        size: 16
+                    },
+                    formatter: function(value) {
+                        return moodIcons[value]; // 显示心情图标
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false // 不显示横轴内容
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Mood Score'
+                    },
+                    beginAtZero: true,
+                    suggestedMax: 10
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // 启用数据标签插件
+    });
+}
+</script>

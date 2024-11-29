@@ -7,49 +7,208 @@
     <title>Welcome to Mental Health App</title>
     <script src="{% static 'js/support.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/support.css' %}">
+    <style>
+        /* Header 样式 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            border-bottom: 2px solid #ddd;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--theme-color);
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .nav-links li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar .nav-links li a:hover {
+            background-color: var(--theme-color);
+            color: white;
+        }
+
+        /* 主体布局 */
+        .main-container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        /* 左侧菜单 */
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* 右侧内容 */
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .content h2 {
+            font-size: 24px;
+            color: var(--theme-color);
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content ul li {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .content ul li strong {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .content ul li p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .content ul li a {
+            color: var(--theme-color);
+            text-decoration: none;
+        }
+
+        .content ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<h1>Service Page</h1>
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="logo" style="color: var(--theme-color);">Mental Health</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="{% url 'support_resources' %}">Service</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}" class="dashboard-btn">Dashboard</a></li>
+                    <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+                    <li><a href="{% url 'signup' %}" class="signup-btn">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
 
-<div class="tab-container">
-    <!-- Tabs -->
-    <button class="tab-button active" onclick="openTab(event, 'EmergencyContacts')">Emergency Contacts</button>
-    <button class="tab-button" onclick="openTab(event, 'ProfessionalConnections')">Professional Connections</button>
-</div>
+    <!-- Main Layout -->
+    <div class="main-container">
+        <!-- 左侧菜单 -->
+        <div class="sidebar">
+            <h1>Service Page</h1>
+            <ul>
+                <li><a href="#EmergencyContacts">Emergency Contacts</a></li>
+                <li><a href="#ProfessionalConnections">Professional Connections</a></li>
+            </ul>
+        </div>
 
-<div class="tab-content">
-    <!-- Emergency Contacts Section -->
-    <div id="EmergencyContacts" class="tab-pane active">
-        <h2>Emergency Contacts</h2>
-        <ul>
-            {% for contact in emergency_contacts %}
-                <li>
-                    <strong>{{ contact.name }}</strong> - {{ contact.region }}
-                    <p>{{ contact.description }}</p>
-                    <p>Phone: {{ contact.phone_number }}</p>
-                </li>
-            {% endfor %}
-        </ul>
+        <!-- 右侧内容 -->
+        <div class="content">
+
+            <!-- Emergency Contacts Section -->
+            <div id="EmergencyContacts">
+                <h2>Emergency Contacts</h2>
+                <ul>
+                    {% for contact in emergency_contacts %}
+                    <li>
+                        <strong>{{ contact.name }}</strong> - {{ contact.region }}
+                        <p>{{ contact.description }}</p>
+                        <p>Phone: {{ contact.phone_number }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Professional Connections Section -->
+            <div id="ProfessionalConnections">
+                <h2>Professional Connections</h2>
+                <ul>
+                    {% for professional in professional_connections %}
+                    <li>
+                        <strong>{{ professional.name }}</strong> - {{ professional.specialization }}
+                        <p>{{ professional.description }}</p>
+                        {% if professional.phone_number %}
+                        <p>Phone: {{ professional.phone_number }}</p>
+                        {% endif %}
+                        {% if professional.email %}
+                        <p>Email: <a href="mailto:{{ professional.email }}">{{ professional.email }}</a></p>
+                        {% endif %}
+                        {% if professional.website %}
+                        <p>Website: <a href="{{ professional.website }}" target="_blank">{{ professional.website }}</a></p>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <!-- Professional Connections Section -->
-    <div id="ProfessionalConnections" class="tab-pane">
-        <h2>Professional Connections</h2>
-        <ul>
-            {% for professional in professional_connections %}
-                <li>
-                    <strong>{{ professional.name }}</strong> - {{ professional.specialization }}
-                    <p>{{ professional.description }}</p>
-                    {% if professional.phone_number %} <p>Phone: {{ professional.phone_number }}</p> {% endif %}
-                    {% if professional.email %}
-                        <p>Email: <a href="mailto:{{ professional.email }}">{{ professional.email }}</a></p> {% endif %}
-                    {% if professional.website %}
-                        <p>Website: <a href="{{ professional.website }}" target="_blank">{{ professional.website }}</a>
-                        </p> {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
 </body>
 </html>

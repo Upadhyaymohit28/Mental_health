@@ -21,7 +21,7 @@
         padding: 30px;
     }
     .log-mood {
-        background-color: var(--theme-color);
+        background-color: white;
         flex: 1;
         max-width: 500px; /* 固定宽度 */
     }
@@ -31,7 +31,7 @@
         max-width: 700px; /* 固定宽度 */
     }
     .description-history {
-        background-color: var(--theme-color);
+        background-color: white;
         width: 100%;
         margin-top: 20px; /* 与上方卡片保持间距 */
         max-width: 1200px; /* 固定宽度 */
@@ -42,19 +42,32 @@
 <div class="container">
     <!-- Log Mood 卡片 -->
     <div class="card log-mood">
+        <div style="position: relative; width: 100%; margin: 0 auto;">
+            <!-- 标题 -->
+            <h1 style="position: absolute; left: 0; color: var(--theme-color); font-size: 29px; margin: 0;">Log Your Mood</h1>
         {% include 'moodtracking/log_mood.html' %}
+    </div>
     </div>
 
     <!-- Mood History 卡片 -->
     <div class="card score-history">
+        <div style="position: relative; width: 100%; margin: 0 auto;">
+    <h1 style="position: absolute; left: 0; color: var(--theme-color); font-size: 29px; margin: 0;">Mood Curve</h1>
+    <div style='margin-top: 50px;'>
         {% include 'moodtracking/score_history.html' %}
+    </div>
+    </div>
     </div>
 </div>
 
 <!-- 第二行：Description History -->
 <div class="container">
     <div class="card description-history">
+        <div style="position: relative; width: 100%; margin: 0 auto;">
+            <!-- 标题 -->
+            <h1 style="position: absolute; left: 0; color: var(--theme-color); font-size: 29px; margin: 0;">Mood Description Record</h1>
         {% include 'moodtracking/description_history.html' %}
+    </div>
     </div>
 </div>
 {% endblock %}
