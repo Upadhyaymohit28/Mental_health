@@ -171,6 +171,11 @@ def gamification(request):
     today_challenge = DailyChallenge.objects.filter(user=request.user, date_assigned=date.today()).first()
     user_badges = Badge.objects.filter(user=request.user)
 
+    if request.method == 'POST' and 'complete_challenge' in request.POST:
+        if today_challenge:
+            today_challenge.is_completed = True
+            today_challenge.save()
+
     # 渲染模板并传递数据
     return render(request, 'users/pages/gamification.html', {
         "active_menu": "Gamification",  # 动态高亮侧边栏菜单项
