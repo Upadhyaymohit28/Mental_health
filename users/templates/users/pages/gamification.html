@@ -1,17 +1,61 @@
 {% extends 'users/base.html' %}
-{% load static %}
 
 {% block title %}
-    Gamification
+    Mood Tracking
 {% endblock %}
 
 {% block content %}
-<div>
-    {% include 'gamification/daily_challenge.html' %}
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 auto;
+        max-width: 1300px;
+        display: flex;
+        justify-content: center;
+    }
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+    .daily_challenge {
+        background-color: white;
+        flex: 1;
+        max-width: 500px; /* 固定宽度 */
+    }
+    .badges {
+        background-color: var(--theme-color);
+        flex: 2;
+        max-width: 700px; /* 固定宽度 */
+    }
+
+</style>
+
+<!-- 第一行：Log Mood 和 Mood History -->
+<div class="container">
+    <!-- Log Mood 卡片 -->
+    <div class="card daily_challenge">
+        <div style="position: relative; width: 100%; margin: 0 auto;">
+            <!-- 标题 -->
+            <h1 style="position: absolute; left: 0; color: var(--theme-color); font-size: 29px; margin: 0;">Today's Challenge</h1>
+            <p style='margin-top: 50px;'>
+            {% include 'gamification/daily_challenge.html' %}
+    </div>
+    </div>
+
+    <!-- Mood History 卡片 -->
+    <div class="card badges">
+        <div style="position: relative; width: 100%; margin: 0 auto;">
+    <h1 style="position: absolute; left: 0; color: #FFEB3B; font-size: 29px; margin: 0;">Wall of Badges</h1>
+    <div style='margin-top: 50px;'>
+        <p style='margin-top: 50px;'>
+        {% include 'gamification/badges.html' %}
+    </div>
+    </div>
+    </div>
 </div>
 
-<div>
-    {% include 'gamification/badges.html' %}
-</div>
 
 {% endblock %}

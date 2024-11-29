@@ -1,8 +1,103 @@
-<h1>Your Badges</h1>
-<ul>
-    {% for badge in badges %}
-        <li>
-            <strong>{{ badge.name }}</strong>: {{ badge.description }} (Awarded: {{ badge.awarded_at|date:"Y-m-d" }})
-        </li>
-    {% endfor %}
-</ul>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badges</title>
+    <style>
+        /* 整个勋章列表容器 */
+        .badge-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* 水平排列 */
+            gap: 20px; /* 勋章之间的间距 */
+            flex-wrap: wrap; /* 当空间不足时换行 */
+        }
+
+        /* 每个勋章项的样式 */
+        .badge-item {
+            position: relative;
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 20px; /* 为了多行排列时间距 */
+        }
+
+        /* 勋章图像的基础样式 */
+        .badge-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* 鼠标悬停时显示描述的样式 */
+        .badge-item:hover .badge-description {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 勋章描述的初始状态（不可见） */
+        .badge-description {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            text-align: center;
+            font-size: 12px;
+            z-index: 10;
+        }
+
+        /* 鼠标悬停时的图像透明效果 */
+        .badge-item:hover .badge-image {
+            opacity: 0.8;
+        }
+
+        /* 无勋章时的鼓励语样式 */
+        .no-badges {
+            text-align: center;
+            font-size: 18px;
+            color: gray;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% if badges %}
+        <ul class="badge-list">
+            {% for badge in badges %}
+                <li class="badge-item">
+                    <!-- 根据勋章名称动态加载图片 -->
+                    <img 
+                        src="{% if badge.name == '3-Day Streak' %}
+                                {% static 'images/3-Day Streak.png' %}
+                              {% elif badge.name == '7-Day Streak' %}
+                                {% static 'images/7-Day Streak.png' %}
+                              {% else %}
+                                {% static 'images/default-badge.png' %}
+                              {% endif %}" 
+                        alt="{{ badge.name }}" 
+                        class="badge-image">
+                    <div class="badge-description">
+                        <strong>{{ badge.name }}</strong>: {{ badge.description }}<br>
+                        Awarded: {{ badge.awarded_at|date:"Y-m-d" }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <!-- 如果没有勋章，显示鼓励语 -->
+        <div class="no-badges" style="color: white; font-style: italic;">
+            You don't have any badges yet. Keep up the good work!
+        </div>
+    {% endif %}
+</body>
+</html>

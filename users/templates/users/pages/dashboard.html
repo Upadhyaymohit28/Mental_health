@@ -193,11 +193,10 @@
                 <div class="tab-pane active" id="mood-tracking">
                 
                     <!-- 最近心情记录 -->
-                    <div class="recent-mood-logs">
-                        {% include 'moodtracking/score_history.html' with content=random_video %}
+                    <div class="recent-mood-logs" onclick="location.href='{% url 'mood_tracking' %}';">
+                        {% include 'moodtracking/score_history.html' with content=mood_logs %}
                     </div>
                 
-                    <button onclick="location.href='{% url 'mood_tracking' %}';">Log Your Mood</button>
                 </div>
                 <!-- 视频推荐内容 -->
 <div class="tab-pane" id="video-recommendation" style="position: relative;">
