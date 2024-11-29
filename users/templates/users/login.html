@@ -1,12 +1,116 @@
-<h2>Login</h2>
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username">
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password">
-    <button type="submit">Login</button>
-</form>
-{% for message in messages %}
-    <div>{{ message }}</div>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Mental Health App</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: url("{% static 'images/illustration.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 400px;
+            margin-bottom: 10%;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .form-container h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-container p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container label {
+            text-align: left;
+            font-size: 14px;
+            color: #555;
+            margin: 10px 0 5px;
+        }
+
+        .form-container input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .form-container button {
+            padding: 12px;
+            font-size: 16px;
+            background-color: var(--theme-color, #4caf50);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #43a047;
+        }
+
+        /* 错误消息样式 */
+        .error-messages {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Sign in to your account</h2>
+        <p>Don't have an account? <a href="{% url 'signup' %}" style="color: var(--theme-color, #4caf50); text-decoration: none;">Sign up</a></p>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="Enter your username" value="{{ request.POST.username|default:'' }}" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required>
+            
+            <button type="submit">Sign in</button>
+        </form>
+        
+        <!-- 错误消息显示 -->
+        {% if messages %}
+        <div class="error-messages">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

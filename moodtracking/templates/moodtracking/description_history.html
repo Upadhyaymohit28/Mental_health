@@ -1,19 +1,38 @@
-<h1>Mood History</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Mood Score</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for mood_log in mood_logs %}
-        <tr>
-            <td>{{ mood_log.timestamp|date:"Y-m-d H:i" }}</td>
-            <td>{{ mood_log.description }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="{% url 'log_mood' %}">Log a New Mood</a>
+
+{% if mood_logs|length == 0 %}
+    <p style="text-align: center; color: red;">No mood logs available. Please log your mood to see the timeline!</p>
+{% else %}
+    <div style="max-width: 1100px; margin: 0 auto;">
+        <!-- 时间轴容器 -->
+        <div style="position: relative; border-left: 2px solid #ccc; padding-left: 20px; margin-top: 45px; height: 200px; overflow-y: auto;">
+
+            {% for mood_log in mood_logs %}
+            <div style="position: relative; margin-bottom: 30px;">
+                <!-- 时间节点 -->
+                <div style="position: absolute; left: -12px; top: 0; background-color: #fff; border: 2px solid #4caf50; border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center;"
+                     title="{{ mood_log.timestamp|date:'Y-m-d H:i' }}">
+                    <!-- 心情图案 -->
+                    <span style="font-size: 18px;">
+                        {% if mood_log.mood_score == 1 %}😭{% endif %}
+                        {% if mood_log.mood_score == 2 %}😢{% endif %}
+                        {% if mood_log.mood_score == 3 %}😞{% endif %}
+                        {% if mood_log.mood_score == 4 %}🙁{% endif %}
+                        {% if mood_log.mood_score == 5 %}😐{% endif %}
+                        {% if mood_log.mood_score == 6 %}🙂{% endif %}
+                        {% if mood_log.mood_score == 7 %}😊{% endif %}
+                        {% if mood_log.mood_score == 8 %}😁{% endif %}
+                        {% if mood_log.mood_score == 9 %}😄{% endif %}
+                        {% if mood_log.mood_score == 10 %}🤩{% endif %}
+                    </span>
+                </div>
+
+                <!-- 描述内容 -->
+                <div style="margin-left: 40px;">
+                    <p style="margin: 0; font-size: 16px; font-weight: bold; color: #333;">{{ mood_log.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+{% endif %}

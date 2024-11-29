@@ -21,35 +21,38 @@ from gamification.models import ChallengeTemplate, Badge, DailyChallenge
 
 
 def signup(request):
+    form = UserCreationForm(request.POST or None)  # 初始化表单，无需重复判断
+    error_messages = []
+
     if request.method == 'POST':
         print("POST request received")
-        form = UserCreationForm(request.POST)
         if form.is_valid():
             print("Form is valid")
             # 保存新用户
             user = form.save()
             # 登录新用户
             login(request, user)
-            
+
             # 创建通知
             Notification.objects.create(
                 user=user,
                 title="Welcome to the platform!",
                 description="Your account has been successfully created. Start exploring our features now.",
-                type="message",  
-                url="",  
+                type="message",
+                url="",
                 is_unread=True,
             )
             print("Notification created")
-            
-            # 跳转到主页
             return redirect('home')
         else:
             print("Form is invalid")
-    else:
-        print("GET request received")
-        form = UserCreationForm()
-    return render(request, 'users/signup.html', {'form': form})
+            # 收集错误信息
+            for field, errors in form.errors.items():
+                for error in errors:
+                    error_messages.append(f"{field.capitalize()}: {error}")
+
+    # 将错误信息传递给模板
+    return render(request, 'users/signup.html', {'form': form, 'error_messages': error_messages})
 
 def login_user(request):
     if request.method == 'POST':
@@ -106,7 +109,7 @@ def dashboard(request):
     
     # 随机选择一个视频
     random_video = random.choice(all_videos) if all_videos.exists() else None
-
+    mood_logs = request.user.mood_logs.order_by('-timestamp')
 
     daily_challenges = ChallengeTemplate.objects.filter(category='Daily')[:3]  # 示例：每日挑战
     user_badges = Badge.objects.filter(user=request.user)  # 用户徽章
@@ -114,6 +117,7 @@ def dashboard(request):
     return render(request, 'users/pages/dashboard.html', {
         "active_menu": "Dashboard",
         "random_video": random_video,
+        "mood_logs": mood_logs,
         "daily_challenges": daily_challenges,
         "user_badges": user_badges,
     })
@@ -169,6 +173,7 @@ def gamification(request):
 
     # 渲染模板并传递数据
     return render(request, 'users/pages/gamification.html', {
+        "active_menu": "Gamification",  # 动态高亮侧边栏菜单项
         'challenge': today_challenge,
         'badges': user_badges,
     })

@@ -1,9 +1,125 @@
-<h2>Sign Up</h2>
-<form method="post" action="{% url 'signup' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign Up</button>
-</form>
-{% for message in messages %}
-    <div>{{ message }}</div>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Mental Health App</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: url("{% static 'images/illustration.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 400px;
+            margin-bottom: 10%;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .form-container h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-container p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container label {
+            text-align: left;
+            font-size: 14px;
+            color: #555;
+            margin: 10px 0 5px;
+        }
+
+        .form-container input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .form-container button {
+            padding: 12px;
+            font-size: 16px;
+            background-color: var(--theme-color, #4caf50);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #43a047;
+        }
+
+        .error-messages {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Sign Up</h2>
+        <p>Already have an account? <a href="{% url 'login' %}" style="color: var(--theme-color, #4caf50); text-decoration: none;">Sign in</a></p>
+        
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="Enter your username" value="{{ form.username.value|default:'' }}" required>
+            {% if form.username.errors %}
+            <div class="error-messages">
+                {{ form.username.errors|join:" " }}
+            </div>
+            {% endif %}
+            
+            <label for="password1">Password:</label>
+            <input type="password" name="password1" id="password1" placeholder="Enter your password" required>
+            {% if form.password1.errors %}
+            <div class="error-messages">
+                {{ form.password1.errors|join:" " }}
+            </div>
+            {% endif %}
+            
+            <label for="password2">Confirm Password:</label>
+            <input type="password" name="password2" id="password2" placeholder="Confirm your password" required>
+            {% if form.password2.errors %}
+            <div class="error-messages">
+                {{ form.password2.errors|join:" " }}
+            </div>
+            {% endif %}
+            
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+</body>
+</html>
