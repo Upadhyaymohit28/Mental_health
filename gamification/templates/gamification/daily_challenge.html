@@ -1,11 +1,34 @@
-<h1>Today's Challenge</h1>
 {% if challenge %}
-    <p><strong>Task:</strong> {{ challenge.task }}</p>
-    <p>Status: {{ challenge.is_completed|yesno:"Completed,Incomplete" }}</p>
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit" name="complete_challenge" value="true">Mark as Completed</button>
-    </form>
+    <div>
+        <!-- Task 和 Status 不设置颜色，仅加粗 -->
+        <p><strong>Task:</strong> <span>{{ challenge.task }}</span></p>
+        <p><strong>Status:</strong> 
+            {% if challenge.is_completed %}
+                <span style="color: green; font-style: italic;">✅ Completed</span>
+            {% else %}
+                <span style="color: red; font-style: italic;">❌ Incomplete</span>
+            {% endif %}
+        </p>
+
+        <!-- 间隔 -->
+        <div style="margin-top: 20px;"></div>
+        
+        <!-- 如果挑战未完成，显示 "Mark as Completed" 按钮，按钮小且居中 -->
+        {% if not challenge.is_completed %}
+            <div style="text-align: center;">
+                <form method="POST" style="display: inline-block;">
+                    {% csrf_token %}
+                    <button type="submit" name="complete_challenge" value="true" 
+                            style="border: none; background: none; font-size: 1.2em; color: #4CAF50; cursor: pointer;">
+                        Mark as Completed ✅
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <!-- 如果挑战已完成，显示鼓励话语 -->
+            <p>Great job! Keep up the good work! 🎉</p>
+        {% endif %}
+    </div>
 {% else %}
     <p>No challenge assigned for today.</p>
 {% endif %}
