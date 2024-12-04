@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'gamification',
     'content',
     'support',
-    'django_cron'
 ]
 
 MIDDLEWARE = [
