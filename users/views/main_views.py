@@ -1,5 +1,3 @@
-# users/views.py
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -19,21 +17,20 @@ from django.shortcuts import redirect
 from datetime import date
 from gamification.models import ChallengeTemplate, Badge, DailyChallenge
 
-
 def signup(request):
-    form = UserCreationForm(request.POST or None)  # 初始化表单，无需重复判断
+    form = UserCreationForm(request.POST or None)  
     error_messages = []
 
     if request.method == 'POST':
         print("POST request received")
         if form.is_valid():
             print("Form is valid")
-            # 保存新用户
+            # Save new user
             user = form.save()
-            # 登录新用户
+            # Log in the new user
             login(request, user)
 
-            # 创建通知
+            # Create notification
             Notification.objects.create(
                 user=user,
                 title="Welcome to the platform!",
@@ -46,12 +43,12 @@ def signup(request):
             return redirect('home')
         else:
             print("Form is invalid")
-            # 收集错误信息
+            # Collect error messages
             for field, errors in form.errors.items():
                 for error in errors:
                     error_messages.append(f"{field.capitalize()}: {error}")
 
-    # 将错误信息传递给模板
+    # Pass error messages to the template
     return render(request, 'users/signup.html', {'form': form, 'error_messages': error_messages})
 
 def login_user(request):
@@ -72,47 +69,43 @@ def logout_user(request):
     logout(request)
     return redirect('home')
 
-
 @login_required
 def profile(request):
     return render(request, 'users/profile.html')
 
 @login_required
 def update_profile(request):
-    # 确保用户的 Profile 存在
+    # Ensure the user's profile exists
     profile, created = UserProfile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
-            # 保存数据并显示成功消息
+            # Save data and show success message
             form.save()
             messages.success(request, 'Your profile has been updated successfully!')
             return redirect('profile')
         else:
-            # 如果表单无效，显示错误消息
+            # If form is invalid, show error message
             messages.error(request, 'Please correct the errors below.')
     else:
-        # 初始化表单实例
+        # Initialize form instance
         form = UserProfileForm(instance=profile)
 
-    # 渲染更新页面
+    # Render update profile page
     return render(request, 'users/update_profile.html', {'form': form})
 
-
 @login_required
-
-
 def dashboard(request):
-    # 从 EducationalContent 表中获取所有视频内容
+    # Fetch all video content from EducationalContent table
     all_videos = EducationalContent.objects.filter(content_type="Video")
     
-    # 随机选择一个视频
+    # Randomly select a video
     random_video = random.choice(all_videos) if all_videos.exists() else None
     mood_logs = request.user.mood_logs.order_by('-timestamp')
 
-    daily_challenges = ChallengeTemplate.objects.filter(category='Daily')[:3]  # 示例：每日挑战
-    user_badges = Badge.objects.filter(user=request.user)  # 用户徽章
+    daily_challenges = ChallengeTemplate.objects.filter(category='Daily')[:3]  # Example: daily challenges
+    user_badges = Badge.objects.filter(user=request.user)  # User badges
 
     return render(request, 'users/pages/dashboard.html', {
         "active_menu": "Dashboard",
@@ -121,7 +114,6 @@ def dashboard(request):
         "daily_challenges": daily_challenges,
         "user_badges": user_badges,
     })
-
 
 @login_required
 def mood_tracking(request):
@@ -146,7 +138,7 @@ def mood_tracking(request):
 @login_required
 def video_recommendations(request):
     try:
-        contents = list(EducationalContent.objects.all())  # 强制加载 QuerySet
+        contents = list(EducationalContent.objects.all())  # Force load QuerySet
         print(f"Contents count in view: {len(contents)}")
     except Exception as e:
         print(f"Error querying EducationalContent: {e}")
@@ -157,17 +149,17 @@ def video_recommendations(request):
 
 @login_required
 def consultation(request):
-    """Consultation 视图"""
+    """Consultation view"""
     return render(request, 'users/pages/consultation.html', {
-        "active_menu": "AIConsultation",  # 动态高亮侧边栏菜单项
+        "active_menu": "AIConsultation",  # Dynamically highlight sidebar menu item
     })
 
 @login_required
 def gamification(request):
     """
-    Gamification 首页视图函数
+    Gamification homepage view function
     """
-    # 从模型中获取每日挑战和徽章信息
+    # Fetch daily challenges and badge information from models
     today_challenge = DailyChallenge.objects.filter(user=request.user, date_assigned=date.today()).first()
     user_badges = Badge.objects.filter(user=request.user)
 
@@ -176,9 +168,9 @@ def gamification(request):
             today_challenge.is_completed = True
             today_challenge.save()
 
-    # 渲染模板并传递数据
+    # Render template and pass data
     return render(request, 'users/pages/gamification.html', {
-        "active_menu": "Gamification",  # 动态高亮侧边栏菜单项
+        "active_menu": "Gamification",  # Dynamically highlight sidebar menu item
         'challenge': today_challenge,
         'badges': user_badges,
     })

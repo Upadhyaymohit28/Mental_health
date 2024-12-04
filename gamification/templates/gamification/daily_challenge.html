@@ -1,6 +1,6 @@
 {% if challenge %}
     <div>
-        <!-- Task 和 Status 不设置颜色，仅加粗 -->
+        <!-- Task and Status are not styled with colors, only bolded -->
         <p><strong>Task:</strong> <span>{{ challenge.task }}</span></p>
         <p><strong>Status:</strong> 
             {% if challenge.is_completed %}
@@ -10,10 +10,10 @@
             {% endif %}
         </p>
 
-        <!-- 间隔 -->
+        <!-- Spacing -->
         <div style="margin-top: 20px;"></div>
         
-        <!-- 如果挑战未完成，显示 "Mark as Completed" 按钮，按钮小且居中 -->
+        <!-- If the challenge is not completed, display the "Mark as Completed" button, styled small and centered -->
         {% if not challenge.is_completed %}
             <div style="text-align: center;">
                 <form method="POST" style="display: inline-block;">
@@ -25,7 +25,7 @@
                 </form>
             </div>
         {% else %}
-            <!-- 如果挑战已完成，显示鼓励话语 -->
+            <!-- If the challenge is completed, display a motivational message -->
             <p>Great job! Keep up the good work! 🎉</p>
         {% endif %}
     </div>

@@ -9,7 +9,7 @@
         <div class="col-md-6">
             <form method="POST" class="needs-validation" novalidate>
                 {% csrf_token %}
-                <!-- 显示错误信息 -->
+                <!-- Display error messages -->
                 {% if form.errors %}
                 <div class="alert alert-danger" role="alert">
                     <ul>
@@ -22,7 +22,7 @@
                 </div>
                 {% endif %}
 
-                <!-- 渲染表单字段 -->
+                <!-- Render form fields -->
                 <div class="form-group">
                     {{ form.age.label_tag }}
                     {{ form.age }}
@@ -47,7 +47,7 @@
                     {% endif %}
                 </div>
 
-                <!-- 提交按钮 -->
+                <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
                 <a href="{% url 'profile' %}" class="btn btn-secondary btn-block">Cancel</a>
             </form>

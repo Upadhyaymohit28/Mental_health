@@ -23,39 +23,40 @@
     .daily_challenge {
         background-color: white;
         flex: 1;
-        max-width: 500px; /* 固定宽度 */
+        max-width: 500px; /* Fixed width */
     }
     .badges {
         background-color: var(--theme-color);
         flex: 2;
-        max-width: 700px; /* 固定宽度 */
+        max-width: 700px; /* Fixed width */
     }
-
 </style>
 
-<!-- 第一行：Log Mood 和 Mood History -->
+<!-- Row 1: Log Mood and Mood History -->
 <div class="container">
-    <!-- Log Mood 卡片 -->
+    <!-- Log Mood Card -->
     <div class="card daily_challenge">
         <div style="position: relative; width: 100%; margin: 0 auto;">
-            <!-- 标题 -->
+            <!-- Title -->
             <h1 style="position: absolute; left: 0; color: var(--theme-color); font-size: 29px; margin: 0;">Today's Challenge</h1>
             <p style='margin-top: 50px;'>
-            {% include 'gamification/daily_challenge.html' %}
-    </div>
+                {% include 'gamification/daily_challenge.html' %}
+            </p>
+        </div>
     </div>
 
-    <!-- Mood History 卡片 -->
+    <!-- Mood History Card -->
     <div class="card badges">
         <div style="position: relative; width: 100%; margin: 0 auto;">
-    <h1 style="position: absolute; left: 0; color: #FFEB3B; font-size: 29px; margin: 0;">Wall of Badges</h1>
-    <div style='margin-top: 50px;'>
-        <p style='margin-top: 50px;'>
-        {% include 'gamification/badges.html' %}
-    </div>
-    </div>
+            <!-- Title -->
+            <h1 style="position: absolute; left: 0; color: #FFEB3B; font-size: 29px; margin: 0;">Wall of Badges</h1>
+            <div style='margin-top: 50px;'>
+                <p style='margin-top: 50px;'>
+                    {% include 'gamification/badges.html' %}
+                </p>
+            </div>
+        </div>
     </div>
 </div>
-
 
 {% endblock %}

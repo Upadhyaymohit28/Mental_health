@@ -1,39 +1,37 @@
+<!-- Success message for mood submission -->
+<div id="success-message" style="display: none; margin: 20px 0; padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
+    Your mood has been saved successfully!
+</div>
 
-
-    <!-- 提交成功提示 -->
-    <div id="success-message" style="display: none; margin: 20px 0; padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
-        Your mood has been saved successfully!
-    </div>
-
-    <!-- Mood Slider 和 Emoji -->
-    <div style="text-align: center; margin-bottom: 20px; margin-top: 40px;">
-        <!-- Emoji 显示 -->
-        <div id="emoji-display" style="font-size: 48px; margin-bottom: 10px;">😐</div>
+<!-- Mood Slider and Emoji -->
+<div style="text-align: center; margin-bottom: 20px; margin-top: 40px;">
+    <!-- Emoji display -->
+    <div id="emoji-display" style="font-size: 48px; margin-bottom: 10px;">😐</div>
+    
+    <!-- Render form -->
+    <form id="mood-form" method="POST" action="{% url 'log_mood' %}" style="width: 100%; position: relative;">
+        {% csrf_token %}
         
-        <!-- 渲染表单 -->
-        <form id="mood-form" method="POST" action="{% url 'log_mood' %}" style="width: 100%; position: relative;">
-            {% csrf_token %}
-            
-            <!-- 渲染滑块 -->
-            {{ form.mood_score }}
-            
-            <!-- 心情文字 -->
-            <div id="mood-text" style="margin-top: 10px; font-size: 16px; color: #ffb703; margin-bottom: 20px;">Neutral</div>
-            
-            <!-- 渲染描述输入框 -->
-            {{ form.description }}
-            
-            <!-- 提交按钮 -->
-            <button 
-                type="submit" 
-                style="margin-top: 10px; float: right; padding: 10px 20px; background-color: var(--theme-color); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
-                Post
-            </button>
-        </form>
-    </div>
+        <!-- Render slider -->
+        {{ form.mood_score }}
+        
+        <!-- Mood text -->
+        <div id="mood-text" style="margin-top: 10px; font-size: 16px; color: #ffb703; margin-bottom: 20px;">Neutral</div>
+        
+        <!-- Render description input field -->
+        {{ form.description }}
+        
+        <!-- Submit button -->
+        <button 
+            type="submit" 
+            style="margin-top: 10px; float: right; padding: 10px 20px; background-color: var(--theme-color); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
+            Post
+        </button>
+    </form>
+</div>
 
 <script>
-    // 定义心情数据：emoji 和文字对应关系，支持10档
+    // Define mood data: mapping of emoji and text to mood scores (1-10)
     const moodData = {
         1: { emoji: "😭", text: "Extremely Sad" },
         2: { emoji: "😢", text: "Very Sad" },
@@ -47,27 +45,27 @@
         10: { emoji: "🤩", text: "Extremely Happy" }
     };
 
-    // 获取滑块、emoji显示和心情文字元素
+    // Get elements for slider, emoji display, and mood text
     const moodSlider = document.querySelector('input[name="mood_score"]');
     const emojiDisplay = document.getElementById("emoji-display");
     const moodText = document.getElementById("mood-text");
     const moodForm = document.getElementById("mood-form");
 
-    // 滑块事件监听：动态切换 Emoji 和文字
+    // Event listener for slider: dynamically update emoji and text
     moodSlider.addEventListener("input", () => {
         const moodValue = moodSlider.value;
         emojiDisplay.textContent = moodData[moodValue].emoji;
         moodText.textContent = moodData[moodValue].text;
     });
 
-    // 初始化显示
+    // Initialize the display with the current slider value
     const initialMood = moodSlider.value;
     emojiDisplay.textContent = moodData[initialMood].emoji;
     moodText.textContent = moodData[initialMood].text;
 
-    // 表单提交通过AJAX处理
+    // Handle form submission with AJAX
     moodForm.addEventListener("submit", async (event) => {
-        event.preventDefault(); // 阻止默认提交行为
+        event.preventDefault(); // Prevent default form submission
 
         const formData = new FormData(moodForm);
 
@@ -83,7 +81,7 @@
             const data = await response.json();
 
             if (response.ok) {
-                // 提交成功后刷新页面
+                // Reload the page upon successful submission
                 location.reload();
             } else {
                 console.error("Error:", data.errors);

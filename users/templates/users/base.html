@@ -6,24 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mental Health App{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <!-- 引入 FontAwesome 图标库 -->
+    <!-- Import FontAwesome icon library -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- 引入 Google Fonts -->
+    <!-- Import Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700" rel="stylesheet">
-    <!-- 引入 Bootstrap CSS -->
+    <!-- Import Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- 主容器 -->
+    <!-- Main container -->
     <div class="main-container">
-        <!-- 侧边栏 -->
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-logo">
                 <div class="logo">Mental Health</div>
             </div>
             <nav class="sidebar-menu">
                 <ul>
-                    <!-- Dashboard 菜单项 -->
+                    <!-- Dashboard menu item -->
                     <li class="{% if active_menu == 'Dashboard' %}active{% endif %}">
                         <a href="{% url 'dashboard' %}">
                             <i class="fas fa-home"></i>
@@ -31,21 +31,21 @@
                         </a>
                     </li>
                     
-                    <!-- 心情追踪菜单项 -->
+                    <!-- Mood Tracking menu item -->
                     <li class="{% if active_menu == 'MoodTracking' %}active{% endif %}">
                         <a href="{% url 'mood_tracking' %}"><i class="fas fa-smile"></i>
                             <span>Mood Tracking</span>
                         </a>
                     </li>
         
-                    <!-- 视频推荐菜单项 -->
+                    <!-- Video Recommendations menu item -->
                     <li class="{% if active_menu == 'VideoRecommendations' %}active{% endif %}">
                         <a href="{% url 'video_recommendations' %}"><i class="fas fa-video"></i>
                             <span>Recommendations</span>
                         </a>
                     </li>
         
-                    <!-- AI 心理咨询菜单项 -->
+                    <!-- AI Consultation menu item -->
                     <li class="{% if active_menu == 'AIConsultation' %}active{% endif %}">
                         <a href="{% url 'ai_consultation' %}"><i class="fas fa-robot"></i>
                             <span>Consultation</span>
@@ -54,7 +54,7 @@
 
                     <li class="{% if active_menu == 'Gamification' %}active{% endif %}">
                         <a href="{% url 'gamification' %}">
-                            <i class="fas fa-trophy"></i> <!-- 使用 FontAwesome 的奖杯图标 -->
+                            <i class="fas fa-trophy"></i> <!-- Use FontAwesome trophy icon -->
                             <span>Gamification</span>
                         </a>
                     </li>
@@ -62,7 +62,7 @@
             </nav>
         
             {% if user.is_authenticated %}
-            <!-- Logout 图标按钮 -->
+            <!-- Logout icon button -->
             <div class="logout-container">
                 <button class="logout-btn" onclick="location.href='{% url 'logout' %}'">
                     <i class="fas fa-sign-out-alt"></i>
@@ -72,9 +72,9 @@
         </aside>
         
 
-        <!-- 内容包装器 -->
+        <!-- Content wrapper -->
         <div class="content-wrapper">
-            <!-- 头部 -->
+            <!-- Header -->
             <header class="header">
                 <nav class="header-menu">
                     <ul>
@@ -98,10 +98,10 @@
                 </nav>
             </header>
 
-            <!-- 内容区域 -->
+            <!-- Content area -->
             <main class="content">
                 {% block content %}
-                <!-- Dashboard 内容 -->
+                <!-- Dashboard content -->
                 <div class="welcome">
                     <h2>Welcome to the Dashboard</h2>
                     <p>Here, you can manage your mental health journey, track your progress, and access various features.</p>
@@ -109,17 +109,17 @@
                 {% endblock %}
             </main>
 
-            <!-- 页脚 -->
+            <!-- Footer -->
             <footer class="footer">
                 <p>&copy; 2024 Mental Health App | <a href="{% url 'privacy_policy' %}">Privacy Policy</a></p>
             </footer>
         </div>
     </div>
 
-    <!-- 引入通知模态框 -->
+    <!-- Include notification modal -->
     {% include "users/notifications.html" %}
 
-    <!-- Profile 模态框 -->
+    <!-- Profile modal -->
     <div class="modal right fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -155,7 +155,7 @@
         </div>
     </div>
 
-    <!-- Edit Profile 模态框 -->
+    <!-- Edit Profile modal -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -187,12 +187,12 @@
         </div>
     </div>
 
-    <!-- 引入 Bootstrap JS 和依赖 -->
+    <!-- Import Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- 自定义样式 -->
+    <!-- Custom styles -->
     <style>
         :root {
             --theme-color: #5A9;
@@ -232,13 +232,13 @@
 
 
 
-    <!-- 自定义样式 -->
+
     <style>
-        /* 根变量 */
+       
         :root {
-            --theme-color: #5A9; /* 使用主页相近的颜色 */
-            --background-color: #FFFFFF; /* 白色背景 */
-            --text-color: #343A40; /* 深色文字 */
+            --theme-color: #5A9; 
+            --background-color: #FFFFFF; 
+            --text-color: #343A40; 
             --light-text-color: #FFFFFF;
         }
 
@@ -253,7 +253,6 @@
             min-height: 100vh;
         }
 
-        /* 侧边栏样式 */
         .sidebar {
             width: 240px;
             background-color: var(--background-color);
@@ -308,12 +307,11 @@
             font-size: 18px;
         }
 
-        /* Logout 图标按钮样式 */
         .logout-container {
-            margin-top: auto; /* 将 Logout 推到底部 */
-            padding: 0 20px; /* 内边距以调整整体对齐 */
+            margin-top: auto; 
+            padding: 0 20px;
             display: flex;
-            justify-content: flex-end; /* 将图标推到右侧 */
+            justify-content: flex-end; 
         }
 
         .logout-btn {
@@ -335,21 +333,19 @@
             color: var(--theme-color);
         }
 
-        /* 内容包装器 */
         .content-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        /* 头部样式 */
         .header {
             background-color: var(--background-color);
             padding: 10px 20px;
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            box-shadow: none; /* 移除头部分割线 */
+            box-shadow: none;
         }
 
         .header-menu ul {
@@ -378,22 +374,21 @@
             font-size: 20px;
         }
 
-        /* 修改徽章样式 */
+      
         .header-menu .badge.badge-danger {
-            font-size: 10px; /* 缩小字体大小 */
-            padding: 2px 5px; /* 调整内边距 */
-            border-radius: 50%; /* 圆形外观 */
-            min-width: 16px; /* 设置最小宽度 */
-            height: 16px; /* 设置高度 */
+            font-size: 10px; 
+            padding: 2px 5px; 
+            border-radius: 50%; 
+            min-width: 16px; 
+            height: 16px; 
             display: flex;
-            justify-content: center; /* 水平居中 */
-            align-items: center; /* 垂直居中 */
+            justify-content: center;
+            align-items: center; 
             position: absolute;
-            top: -5px; /* 调整徽章位置 */
-            right: -5px; /* 调整徽章位置 */
+            top: -5px; 
+            right: -5px; 
         }
 
-        /* 内容样式 */
         .content {
             padding: 20px;
             flex: 1;
@@ -407,13 +402,12 @@
             color: var(--text-color);
         }
 
-        /* 页脚样式 */
         .footer {
             background-color: var(--background-color);
             color: var(--text-color);
             text-align: center;
             padding: 10px 20px;
-            box-shadow: none; /* 移除页脚分割线 */
+            box-shadow: none; 
         }
 
         .footer a {
@@ -421,7 +415,7 @@
             text-decoration: underline;
         }
 
-        /* 响应式设计 */
+    
         @media screen and (max-width: 768px) {
             .sidebar {
                 width: 60px;
@@ -439,9 +433,9 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // 当模态框关闭时刷新整个页面
+           
             $('#notificationsModal').on('hidden.bs.modal', function () {
-                location.reload(); // 刷新整个页面
+                location.reload(); 
             });
         });
     </script>

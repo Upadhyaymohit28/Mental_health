@@ -16,10 +16,10 @@ async function sendMessageToBackend(doctorId, message) {
         }
 
         const data = await response.json();
-        return data.message; // 后端仅返回消息内容
+        return data.message; // Backend only returns the message content
     } catch (err) {
         console.error("Fetch error:", err);
-        return `Error: ${err.message}`; // 返回错误消息
+        return `Error: ${err.message}`; // Return error message
     }
 }
 
@@ -34,31 +34,31 @@ function initializeChatbot(doctorId) {
         const userMessage = chatbotInput.value.trim();
         if (!userMessage) return;
 
-        // 调用后端发送消息
+        // Call the backend to send the message
         const aiMessage = await sendMessageToBackend(doctorId, userMessage);
 
-        // 在 HTML 中处理展示逻辑
-        appendMessage("user", userMessage, null); // 用户消息无头像
+        // Handle display logic in HTML
+        appendMessage("user", userMessage, null); // User messages have no avatar
         appendMessage(
             "doctor",
             aiMessage,
-            doctorDetails[doctorId].image // 医生头像
+            doctorDetails[doctorId].image // Doctor avatar
         );
 
-        // 清空输入框
+        // Clear the input box
         chatbotInput.value = "";
     };
 }
 
-// 用于向消息区域添加消息的函数
+// Function to add messages to the chat area
 function appendMessage(sender, message, avatarUrl) {
     const chatbotMessages = document.getElementById("chatbot-messages");
 
-    // 创建消息容器
+    // Create the message container
     const messageContainer = document.createElement("div");
     messageContainer.classList.add("message-container", `${sender}-message`);
 
-    // 如果有头像，添加头像元素
+    // If there is an avatar, add the avatar element
     if (avatarUrl) {
         const avatar = document.createElement("img");
         avatar.src = avatarUrl;
@@ -66,22 +66,22 @@ function appendMessage(sender, message, avatarUrl) {
         avatar.classList.add("avatar");
         messageContainer.appendChild(avatar);
     } else if (sender === "user") {
-        // 如果是用户消息且没有头像，生成字母头像
+        // If it's a user message and no avatar exists, generate a letter avatar
         const avatar = document.createElement("div");
         avatar.classList.add("avatar", "user-avatar");
-        avatar.textContent = "U"; // 可改为用户的名字首字母
+        avatar.textContent = "U"; // Can be changed to the user's name initial
         messageContainer.appendChild(avatar);
     }
 
-    // 添加消息内容
+    // Add the message content
     const messageText = document.createElement("div");
     messageText.classList.add("message-text");
     messageText.textContent = message;
     messageContainer.appendChild(messageText);
 
-    // 添加到消息列表
+    // Append to the chat message list
     chatbotMessages.appendChild(messageContainer);
 
-    // 滚动到底部
+    // Scroll to the bottom
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 }

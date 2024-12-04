@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Card</title>
     <style>
-        /* 卡片整体样式 */
+        /* Overall card styling */
         .content-card {
             width: 100%;
-            max-width: 6507px; /* 限制最大宽度 */
-            background-color: transparent; /* 背景透明 */
+            max-width: 6507px; /* Limit maximum width */
+            background-color: transparent; /* Transparent background */
             padding: 15px;
             display: flex;
             gap: 15px;
-            align-items: center; /* 垂直居中对齐 */
+            align-items: center; /* Vertical alignment */
         }
 
-        /* 视频类型布局 */
+        /* Layout for video type */
         .content-video {
             display: flex;
             flex-direction: row;
             gap: 15px;
-            align-items: center; /* 图片和文字垂直居中 */
+            align-items: center; /* Align image and text vertically */
         }
 
         .content-video .content-text {
@@ -32,14 +32,14 @@
         }
 
         .content-video .content-thumbnail img {
-            width: 120px; /* 控制封面图片宽度 */
+            width: 120px; /* Control thumbnail image width */
             height: auto;
             border-radius: 8px;
             object-fit: cover;
             display: block;
         }
 
-        /* 非视频类型布局 */
+        /* Layout for non-video type */
         .content-non-video {
             display: flex;
             flex-direction: column;
@@ -47,7 +47,7 @@
             gap: 10px;
         }
 
-        /* 通用标题样式 */
+        /* Common title styling */
         .content-title {
             font-size: 18px;
             font-weight: bold;
@@ -55,7 +55,7 @@
             margin: 0;
         }
 
-        /* 通用描述样式 */
+        /* Common description styling */
         .youtube-description {
             font-size: 14px;
             color: #666;
@@ -63,7 +63,7 @@
             margin: 0;
         }
 
-        /* 卡片头部 */
+        /* Card header */
         .content-header {
             display: flex;
             justify-content: space-between;
@@ -88,9 +88,9 @@
 <body>
     <div class="content-card" onclick="window.open('{{ content.source_url }}', '_blank')" >
         {% if content.content_type == "Video" %}
-        <!-- 视频类型布局 -->
+        <!-- Layout for video type -->
         <div class="content-video">
-            <!-- 左侧内容 -->
+            <!-- Left content -->
             <div class="content-text">
                 <div class="content-header">
                     <span class="content-type">{{ content.content_type }}</span>
@@ -101,7 +101,7 @@
                 <p class="youtube-description">{{ content.youtube_description }}</p>
                 {% endif %}
             </div>
-            <!-- 右侧封面图片 -->
+            <!-- Right thumbnail image -->
             {% if content.youtube_thumbnail %}
             <div class="content-thumbnail">
                 <img src="{{ content.youtube_thumbnail }}" alt="Video Thumbnail">
@@ -109,7 +109,7 @@
             {% endif %}
         </div>
         {% else %}
-        <!-- 非视频类型布局 -->
+        <!-- Layout for non-video type -->
         <div class="content-non-video">
             <div class="content-header">
                 <span class="content-type">{{ content.content_type }}</span>
