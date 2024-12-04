@@ -11,26 +11,25 @@ def log_mood(request):
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         form = MoodLogForm(request.POST)
         if form.is_valid():
-            # 保存用户的 MoodLog 数据
+            # Save the user's MoodLog data
             mood_log = form.save(commit=False)
             mood_log.user = request.user
             mood_log.save()
-            # 返回成功状态和消息
+            # Return success status and message
             return JsonResponse({'success': True, 'message': "Your mood has been saved successfully!"})
         else:
-            # 如果有错误，返回错误信息
+            # If there are errors, return error messages
             return JsonResponse({'success': False, 'errors': form.errors}, status=400)
     
-    # 如果是 GET 请求，返回完整页面
+    # If the request is GET, return the full page
     form = MoodLogForm()
     return render(request, 'users/pages/mood_tracking.html', {
         'form': form,
     })
 
 
-
 @login_required
 def mood_history(request):
+    # Retrieve mood logs for the logged-in user, ordered by timestamp (most recent first)
     mood_logs = request.user.mood_logs.order_by('-timestamp')
     return render(request, 'moodtracking/mood_history.html', {'mood_logs': mood_logs})
-

@@ -7,15 +7,15 @@ class MoodLogForm(forms.ModelForm):
         fields = ['mood_score', 'description']
         widgets = {
             'mood_score': forms.NumberInput(attrs={
-                'type': 'range',  # 滑块类型
-                'min': '1',
-                'max': '10',
-                'step': '1',
+                'type': 'range',  # Slider input type
+                'min': '1',  # Minimum value
+                'max': '10',  # Maximum value
+                'step': '1',  # Step interval
                 'style': 'width: 80%; appearance: none; height: 10px; background: linear-gradient(to right, #000000, #1e3a8a, #2563eb, #60a5fa, #e74c3c); border-radius: 5px; cursor: pointer; outline: none;',
-                'value': '5',  # 默认值设置为 5
+                'value': '5',  
             }),
             'description': forms.Textarea(attrs={
-                'placeholder': 'Share what you are thinking here...',  # 输入框提示文字
+                'placeholder': 'Share what you are thinking here...',  # Placeholder text for the input box
                 'style': 'width: 100%; height: 120px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; font-size: 16px; resize: none; outline: none; background-color: #ffffff; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); color: #333;',
             }),
         }

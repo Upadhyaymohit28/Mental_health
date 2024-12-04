@@ -9,51 +9,51 @@ class Command(BaseCommand):
     help = 'Initialize system by checking if it is the first run, and cleaning up unnecessary files and folders.'
 
     def handle(self, *args, **kwargs):
-        # 获取 Django 项目的根目录 (manage.py 所在目录)
+        # Get the root directory of the Django project (where manage.py is located)
         project_root_dir = settings.BASE_DIR
         initialized_file = os.path.join(project_root_dir, 'initialized.txt')
 
-        # 检查 initialized.txt 是否存在
+        # Check if the initialized.txt file exists
         if os.path.exists(initialized_file):
             print("Not the first run, skipping initialization.")
         else:
             print("First run, proceeding with initialization...")
 
-            # 删除 db.sqlite3 文件
+            # Delete the db.sqlite3 file
             print("Deleting db.sqlite3...")
             self.delete_file_or_directory(os.path.join(project_root_dir, 'db.sqlite3'))
 
-            # 获取项目根目录下的第一级子文件夹
+            # Get the top-level subdirectories in the project root directory
             print("Getting subdirectories...")
             subdirs = [d for d in os.listdir(project_root_dir) if os.path.isdir(os.path.join(project_root_dir, d))]
 
-            # 遍历子文件夹，删除不需要的缓存文件和 migrations 文件夹
+            # Iterate through subdirectories to clean up cache files and migrations folders
             for subdir in subdirs:
                 if subdir == '.git':
                     continue
 
                 subdir_path = os.path.join(project_root_dir, subdir)
 
-                # 删除 __pycache__ 文件夹及其中的 .pyc 文件
+                # Delete __pycache__ folders and .pyc files
                 print(f"Cleaning {subdir_path}...")
                 self.delete_pycache_and_pyc_files(subdir_path)
 
-                # 删除 migrations 文件夹
+                # Delete the migrations folder
                 print(f"Deleting migrations folder in {subdir_path}...")
                 self.delete_file_or_directory(os.path.join(subdir_path, 'migrations'))
 
-                # 创建 migrations 文件夹和空的 __init__.py 文件
+                # Create migrations folder and an empty __init__.py file
                 print(f"Creating migrations folder and __init__.py in {subdir_path}...")
                 self.create_migrations_and_init(subdir_path)
 
-            # 执行数据库迁移
+            # Run database migrations
             print("Running makemigrations...")
             self.run_management_command('makemigrations')
 
             print("Running migrate...")
             self.run_management_command('migrate')
 
-            # 执行填充命令
+            # Run population commands
             print("Running populate_content...")
             self.run_management_command('populate_content')
 
@@ -63,12 +63,12 @@ class Command(BaseCommand):
             print("Running populate_support...")
             self.run_management_command('populate_support')
 
-            # 初始化完成后，创建 initialized.txt 文件
+            # After initialization, create the initialized.txt file
             print("Initialization completed. Creating 'initialized.txt' file...")
             self.create_initialized_file(initialized_file)
 
     def delete_file_or_directory(self, path):
-        """删除文件或目录"""
+        """Delete a file or directory"""
         if os.path.exists(path):
             if os.path.isdir(path):
                 shutil.rmtree(path)
@@ -76,7 +76,7 @@ class Command(BaseCommand):
                 os.remove(path)
 
     def delete_pycache_and_pyc_files(self, subdir_path):
-        """删除 __pycache__ 文件夹和 .pyc 文件"""
+        """Delete __pycache__ folders and .pyc files"""
         for root, dirs, files in os.walk(subdir_path):
             if '__pycache__' in dirs:
                 shutil.rmtree(os.path.join(root, '__pycache__'))
@@ -85,18 +85,17 @@ class Command(BaseCommand):
                     os.remove(os.path.join(root, file))
 
     def create_migrations_and_init(self, subdir_path):
-        """在每个子文件夹中创建 migrations 文件夹和空的 __init__.py 文件"""
+        """Create a migrations folder and an empty __init__.py file in each subdirectory"""
         migrations_path = os.path.join(subdir_path, 'migrations')
         if not os.path.exists(migrations_path):
             os.makedirs(migrations_path)
             open(os.path.join(migrations_path, '__init__.py'), 'w').close()
 
     def create_initialized_file(self, path):
-        """创建 initialized.txt 文件"""
+        """Create the initialized.txt file"""
         with open(path, 'w') as f:
             f.write('Initialization completed.\n')
 
     def run_management_command(self, command_name):
-        """运行 Django 管理命令"""
+        """Run a Django management command"""
         call_command(command_name)
-

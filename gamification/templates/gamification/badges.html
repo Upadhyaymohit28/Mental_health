@@ -6,25 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Badges</title>
     <style>
-        /* 整个勋章列表容器 */
+        /* Container for the entire badge list */
         .badge-list {
             list-style-type: none;
             padding: 0;
             display: flex;
-            justify-content: flex-start; /* 水平排列 */
-            gap: 20px; /* 勋章之间的间距 */
-            flex-wrap: wrap; /* 当空间不足时换行 */
+            justify-content: flex-start; /* Arrange badges horizontally */
+            gap: 20px; /* Space between badges */
+            flex-wrap: wrap; /* Wrap badges to the next line if space is insufficient */
         }
 
-        /* 每个勋章项的样式 */
+        /* Styles for each badge item */
         .badge-item {
             position: relative;
             display: inline-block;
             text-align: center;
-            margin-bottom: 20px; /* 为了多行排列时间距 */
+            margin-bottom: 20px; /* Spacing for multi-line layout */
         }
 
-        /* 勋章图像的基础样式 */
+        /* Basic styles for badge images */
         .badge-image {
             width: 80px;
             height: 80px;
@@ -32,13 +32,13 @@
             cursor: pointer;
         }
 
-        /* 鼠标悬停时显示描述的样式 */
+        /* Styles for the description displayed on hover */
         .badge-item:hover .badge-description {
             opacity: 1;
             visibility: visible;
         }
 
-        /* 勋章描述的初始状态（不可见） */
+        /* Initial state of badge descriptions (hidden) */
         .badge-description {
             position: absolute;
             bottom: -40px;
@@ -56,12 +56,12 @@
             z-index: 10;
         }
 
-        /* 鼠标悬停时的图像透明效果 */
+        /* Image transparency effect on hover */
         .badge-item:hover .badge-image {
             opacity: 0.8;
         }
 
-        /* 无勋章时的鼓励语样式 */
+        /* Styles for encouragement message when no badges are available */
         .no-badges {
             text-align: center;
             font-size: 18px;
@@ -75,7 +75,7 @@
         <ul class="badge-list">
             {% for badge in badges %}
                 <li class="badge-item">
-                    <!-- 根据勋章名称动态加载图片 -->
+                    <!-- Dynamically load images based on badge name -->
                     <img 
                         src="{% if badge.name == '3-Day Streak' %}
                                 {% static 'images/3-Day Streak.png' %}
@@ -94,7 +94,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <!-- 如果没有勋章，显示鼓励语 -->
+        <!-- Display encouragement message if no badges are available -->
         <div class="no-badges" style="color: white; font-style: italic;">
             You don't have any badges yet. Keep up the good work!
         </div>

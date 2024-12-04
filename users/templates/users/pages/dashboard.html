@@ -7,12 +7,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- 头部内容保持不变 -->
+    <!-- Header content remains unchanged -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
- /* 全局样式 */
+        /* Global styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -21,7 +21,7 @@
         }
 
         .welcome-section {
-            background-color: var(--theme-color); /* 替换为您的主题色 */
+            background-color: var(--theme-color); /* Replace with your theme color */
             color: #fff;
             text-align: left;
             padding: 30px 20px;
@@ -41,7 +41,7 @@
         .welcome-section p {
             font-size: 1rem;
             margin-top: 10px;
-            margin-left: 20px; /* 第二行向右缩进 */
+            margin-left: 20px; /* Indent second line */
         }
 
         .dashboard-section {
@@ -74,20 +74,20 @@
             position: relative;
         }
 
-        /* 左侧Tab区域样式调整 */
+        /* Left tab area styles */
         .tab-container {
             display: flex;
-            justify-content: center; /* 居中对齐 */
+            justify-content: center; /* Center alignment */
             gap: 20px;
-            border-bottom: none; /* 去掉分界线 */
+            border-bottom: none; /* Remove dividing line */
         }
 
         .tab {
             padding: 10px 20px;
             cursor: pointer;
-            background-color: #f0f0f0; /* 默认灰色背景 */
-            color: var(--theme-color); /* 主题色字体 */
-            border: none; /* 去掉边框 */
+            background-color: #f0f0f0; /* Default gray background */
+            color: var(--theme-color); /* Theme color text */
+            border: none; /* Remove borders */
             outline: none; 
             border-radius: 8px;
             font-size: 16px;
@@ -96,17 +96,16 @@
         }
 
         .tab.active {
-            background-color: var(--theme-color); /* 激活背景使用主题色 */
-            color: #fff; /* 激活状态字体白色 */
-            border-radius: 8px; /* 圆角 */
+            background-color: var(--theme-color); /* Active background uses theme color */
+            color: #fff; /* White text for active state */
+            border-radius: 8px; /* Rounded corners */
         }
 
         .tab-content {
             flex: 1;
             padding-top: 20px;
-            border-top: none; /* 移除Tab和内容间的分界线 */
+            border-top: none; /* Remove dividing line between tab and content */
         }
-
 
         .tab-pane button {
             margin-top: 10px;
@@ -124,7 +123,7 @@
             background-color: #164395;
         }
 
-        /* AI 咨询卡片样式 */
+        /* AI consultation card styles */
         .card.ai-consultation .card-header {
             display: flex;
             justify-content: space-between;
@@ -166,7 +165,7 @@
             background-color: #164395;
         }
 
-        /* 调整高度 */
+        /* Adjust height */
         .dashboard-container .card {
             display: flex;
             flex-direction: column;
@@ -174,34 +173,34 @@
     </style>
 </head>
 <body>
-    <!-- 欢迎部分 -->
+    <!-- Welcome section -->
     <section class="welcome-section">
         <h2 id="welcome-message">Hello 🌅, {{ request.user.username }}</h2>
         <p id="sub-message">Good morning! Shine bright like the sun.</p>
     </section>
 
-    <!-- 主内容部分 -->
+    <!-- Main content section -->
     <section class="dashboard-section">
-        <!-- 左侧：带选项卡的卡片 -->
+        <!-- Left side: Card with tabs -->
         <div class="card left-card">
             <div class="tab-container">
                 <button class="tab active" data-tab="mood-tracking">Mood Tracking</button>
                 <button class="tab" data-tab="video-recommendation">Video Recommendations</button>
             </div>
             <div class="tab-content">
-                <!-- 心情追踪内容 -->
+                <!-- Mood tracking content -->
                 <div class="tab-pane active" id="mood-tracking">
                 
-                    <!-- 最近心情记录 -->
+                    <!-- Recent mood logs -->
                     <div class="recent-mood-logs" onclick="location.href='{% url 'mood_tracking' %}';">
                         {% include 'moodtracking/score_history.html' with content=mood_logs %}
                     </div>
                 
                 </div>
-                <!-- 视频推荐内容 -->
+                <!-- Video recommendation content -->
 <div class="tab-pane" id="video-recommendation" style="position: relative;">
 
-    <!-- 显示随机推荐的视频 -->
+    <!-- Display randomly recommended video -->
     {% if random_video %}
         <div class="video-recommendation">
             {% include 'content/content_detail.html' with content=random_video %}
@@ -210,17 +209,17 @@
         <p>No videos available at the moment.</p>
     {% endif %}
 
-    <!-- 图标形式的按钮，增加提示文字 -->
+    <!-- Button icon with tooltip -->
     <a href="{% url 'video_recommendations' %}" 
        style="position: absolute; top: 10px; right: 10px; font-size: 14px; text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--theme-color);">
         <span>View More</span>
-        &#x279C; <!-- Unicode右箭头图标 -->
+        &#x279C; <!-- Unicode arrow icon -->
     </a>
 </div>
             </div>
         </div>
 
-<!-- 右侧：AI 咨询卡片 -->
+<!-- Right side: AI consultation card -->
 <div class="card ai-consultation" style="background-color: #396964; color: white; border-radius: 15px; padding: 20px;">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="color: white; font-size: 1.8rem; margin: 0;">Talk to Our AI Wellness Companion</h3>
@@ -230,53 +229,53 @@
         Engage in a conversation with our AI wellness companion for thoughtful guidance and support. Choose a doctor below and click "Start Chat" to begin.
     </p>
     <div class="input-area" style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
-        <!-- 下拉菜单 -->
+        <!-- Dropdown menu -->
         <select id="doctor-select" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 1rem;" onchange="updateDoctorInfo()">
             <option value="" disabled selected>Select a Doctor</option>
             <option value="1">Dr. Jane Smith</option>
             <option value="2">Dr. John Doe</option>
             <option value="3">Dr. Emily White</option>
         </select>
-        <!-- 按钮 -->
+        <!-- Button -->
         <button style="background-color: #ffb703; color: white; padding: 10px 15px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;" onclick="startChat()">
             Start Chat
         </button>
     </div>
 
-    <!-- 显示医生专业 -->
+    <!-- Display doctor expertise -->
     <p id="doctor-info" style="margin-top: 20px; font-size: 1rem; color: white; text-align: center;">
         Select a doctor to see their expertise.
     </p>
 </div>
 
 <script>
-    // 定义医生信息
+    // Define doctor information
     const doctorInfo = {
         1: "Specializes in Anxiety and Depression.",
         2: "Focuses on Cognitive Behavioral Therapy.",
         3: "Expertise in Mindfulness and Stress Management."
     };
 
-    // 更新医生专业领域信息
+    // Update doctor expertise information
     function updateDoctorInfo() {
         const doctorSelect = document.getElementById("doctor-select");
         const doctorInfoText = document.getElementById("doctor-info");
         const selectedDoctorId = doctorSelect.value;
         
         if (selectedDoctorId) {
-            doctorInfoText.textContent = doctorInfo[selectedDoctorId];  // 显示专业领域
+            doctorInfoText.textContent = doctorInfo[selectedDoctorId];  // Show expertise
         } else {
-            doctorInfoText.textContent = "Select a doctor to see their expertise.";  // 默认提示
+            doctorInfoText.textContent = "Select a doctor to see their expertise.";  // Default hint
         }
     }
 
-    // 按钮点击事件，跳转到聊天页面，并传递医生 ID
+    // Button click event to navigate to chat page with doctor ID
     function startChat() {
         const doctorSelect = document.getElementById("doctor-select");
         const selectedDoctorId = doctorSelect.value;
 
         if (selectedDoctorId) {
-            // 跳转到聊天页面，并传递医生 ID
+            // Redirect to chat page with doctor ID
             location.href = `{% url 'ai_consultation' %}?doctor_id=${selectedDoctorId}`;
         } else {
             alert("Please select a doctor before starting the chat.");
@@ -289,7 +288,7 @@
     </section>
 
     <script>
-        // 根据时间动态更新欢迎信息
+        // Dynamically update welcome message based on time of day
         const welcomeMessage = document.getElementById("welcome-message");
         const subMessage = document.getElementById("sub-message");
         const hours = new Date().getHours();
@@ -308,17 +307,17 @@
         welcomeMessage.innerHTML = `Hello ${greetingIcon}, {{ request.user.username }}`;
         subMessage.textContent = subText;
 
-        // 选项卡功能
+        // Tab functionality
         const tabs = document.querySelectorAll('.tab');
         const tabPanes = document.querySelectorAll('.tab-pane');
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // 移除所有选项卡和内容的激活状态
+                // Remove active state from all tabs and content
                 tabs.forEach(t => t.classList.remove('active'));
                 tabPanes.forEach(pane => pane.classList.remove('active'));
 
-                // 激活选中的选项卡和对应的内容
+                // Activate selected tab and corresponding content
                 tab.classList.add('active');
                 const tabId = tab.getAttribute('data-tab');
                 document.getElementById(tabId).classList.add('active');

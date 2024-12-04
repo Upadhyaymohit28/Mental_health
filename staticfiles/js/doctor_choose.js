@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const chatbotMessages = document.getElementById("chatbot-messages");
     const chatHeader = document.getElementById("chat-header");
 
-    // 医生聊天初始化逻辑
+    // Doctor chat initialization logic
     window.startDoctorChat = function (doctorId) {
         const selectedDoctor = doctorDetails[doctorId];
 
-        // 更新聊天头部为医生头像、名字和简介
+        // Update chat header with doctor's avatar, name, and description
         chatHeader.innerHTML = `
            <div class="doctor-chat-info">
                <img src="${selectedDoctor.image}" class="doctor-avatar" alt="${selectedDoctor.name}">
@@ -21,25 +21,25 @@ document.addEventListener("DOMContentLoaded", function () {
            </div>
         `;
 
-        // 显示输入框并清空消息区域
+        // Display the input box and clear the message area
         chatbotForm.style.display = "flex";
         chatbotMessages.classList.remove("empty");
         chatbotMessages.innerHTML = "";
 
-        // 更新医生卡片选中状态
+        // Update selected state for the doctor card
         document.querySelectorAll('.doctor-item').forEach(item => item.classList.remove('selected'));
         document.querySelector(`.doctor-item:nth-child(${doctorId + 1})`).classList.add('selected');
 
-        // 调用 doctor_chatbots.js 中的初始化逻辑
+        // Call the initialization logic from doctor_chatbots.js
         initializeChatbot(doctorId);
     };
 
-    // 从 URL 获取医生 ID 参数
+    // Get doctor ID parameter from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const doctorId = urlParams.get('doctor_id');
 
     if (doctorId) {
-        // 自动初始化选中的医生聊天
+        // Automatically initialize chat for the selected doctor
         startDoctorChat(Number(doctorId));
     }
 });
