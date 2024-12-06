@@ -11,7 +11,7 @@ An innovative AI-driven platform designed to provide users with tools for tracki
 4. [Core Components](#core-components)
 5. [How It Works](#how-it-works)
 6. [Testing](#testing)
-7. [Screen Shots](#screen-shots)
+7. [Core Implementation](#core-implementation)
 8. [Future Enhancements](#future-enhancements)
 9. [Contributors](#contributors)
 10. [License](#license)
@@ -152,9 +152,189 @@ python manage.py test
 - Support services (emergency contacts and professional connections)
 
 ---
-## **Screen Shots**
+## **Core Implementation**
 
-To be continued.
+Below are the core code snippets that power the main features of the AI-powered mental health assistant.
+
+### **1. Mood Tracking**
+
+**File**: `moodtracking/models.py`
+
+```python
+from django.db import models
+from users.models import User
+
+class MoodLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mood_logs')
+    mood_score = models.IntegerField()  # Scale: 1 (low) to 10 (high)
+    description = models.TextField(blank=True)  # Optional text entry for mood
+    sentiment = models.CharField(max_length=50, blank=True)  # Result from AI analysis
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.mood_score} - {self.timestamp}"
+
+    def get_points(self):
+        return self.mood_score  # Simple example: mood score equals points
+```
+
+**Purpose**:
+- This model logs user moods, including a score, optional description, and timestamp.
+- Sentiment can be analyzed and stored using AI.
+
+---
+
+### **2. Daily Challenges**
+
+**File**: `gamification/models.py`
+
+```python
+class ChallengeTemplate(models.Model):
+    task = models.TextField()  # Description of the challenge
+
+    def __str__(self):
+        return self.task
+
+class DailyChallenge(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='daily_challenges')
+    task = models.TextField()
+    date_assigned = models.DateField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Challenge for {self.user.username} on {self.date_assigned}"
+```
+
+**Purpose**:
+- The `ChallengeTemplate` model stores predefined tasks.
+- The `DailyChallenge` model assigns specific tasks to users and tracks completion.
+
+---
+
+### **3. Gamification**
+
+**File**: `gamification/signals.py`
+
+```python
+@receiver(post_save, sender=MoodLog)
+def update_streak(sender, instance, created, **kwargs):
+    if created:
+        user = instance.user
+        streak, _ = Streak.objects.get_or_create(user=user)
+
+        if streak.last_activity_date == date.today():
+            return  # Skip if already updated today
+
+        if streak.last_activity_date == date.today() - timedelta(days=1):
+            streak.current_streak += 1
+        else:
+            streak.current_streak = 1
+
+        streak.longest_streak = max(streak.longest_streak, streak.current_streak)
+        streak.last_activity_date = date.today()
+        streak.save()
+
+        award_badges(user, streak.current_streak)
+```
+
+**Purpose**:
+- Tracks user streaks for consistent mood logging.
+- Awards badges based on streak milestones.
+
+---
+
+### **4. Support Services**
+
+**File**: `support/models.py`
+
+```python
+class EmergencyContact(models.Model):
+    name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=20)
+    description = models.TextField(blank=True)
+    region = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class ProfessionalConnection(models.Model):
+    name = models.CharField(max_length=100)
+    specialization = models.CharField(max_length=100)
+    email = models.EmailField(blank=True)
+    phone_number = models.CharField(max_length=20, blank=True)
+    website = models.URLField(blank=True)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+```
+
+**Purpose**:
+- Stores emergency contact details and professional resources.
+- Supports region-based filtering for relevance.
+
+---
+
+### **5. AI Integration**
+
+**File**: `chatbot/models.py`
+
+```python
+class ChatHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    response = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+```
+**Purpose**:
+- Stores chatting history.
+
+**File**: `chatbot/views.py`
+
+```python
+@csrf_exempt
+def chatbot_response(request):
+    ...
+    # General chatbot logic
+    system_message = (
+        "You are a professional and empathetic assistant for a mental health platform. "
+        "Provide support on mindfulness, stress management, and emotional well-being. "
+        "Suggest available doctors for specific queries and answer questions about subscriptions and benefits of the app."
+    )
+
+    # Handle general queries
+    keywords_subscription = ["subscription", "pricing", "benefits", "features"]
+    if any(keyword in user_message.lower() for keyword in keywords_subscription):
+        return JsonResponse({
+            "message": (
+                "Our app offers personalized mental health support, mood tracking, mindfulness exercises, "
+                "and access to licensed professionals. You can explore our subscription plans on the 'Pricing' page."
+            )
+        })
+
+    if "doctor" in user_message.lower():
+        doctor_options = ", ".join([f"{doc_id}: {doc}" for doc_id, doc in DOCTOR_PROFILES.items()])
+        return JsonResponse({
+            "message": f"We have the following doctors available:\n{doctor_options}. "
+                       "Please provide the doctor number to start a conversation."
+        })
+
+    # Call OpenAI API for the AI's response
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": user_message},
+        ],
+        max_tokens=200,
+        temperature=0.7,
+    )
+    
+    ...
+```
+
+**Purpose**:
+- Provides dynamic responses to enhance user engagement.
 
 ---
 
