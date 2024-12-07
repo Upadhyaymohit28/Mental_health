@@ -1,5 +1,3 @@
-
-
 {% if mood_logs|length < 5 %}
 <p style="color: var(--theme-color); text-align: center;">Not enough data to display a chart. Please log at least 5 mood records.</p>
 {% else %}
@@ -9,10 +7,10 @@
 {% endif %}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- 插件用于显示标签 -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- Plugin for displaying labels -->
 
 <script>
-// 提取 Django 模板中的 mood_logs 数据
+// Extract mood_logs data from Django template
 const moodLogs = [
     {% for log in mood_logs %}
     {
@@ -23,23 +21,23 @@ const moodLogs = [
 ];
 
 if (moodLogs.length >= 5) {
-    // 数据按时间排序后选择最近 15 条
+    // Sort data by time and select the most recent 15 records
     const filteredLogs = moodLogs.slice(0, 15);
     const scores = filteredLogs.map(log => log.mood_score);
     const timestamps = filteredLogs.map(log => log.timestamp);
 
-    // 定义心情图标和描述
+    // Define mood icons and descriptions
     const moodIcons = {
-        1: "⛈️", // 极度低落
-        2: "🌧️", // 非常难过
-        3: "☁️", // 难过
-        4: "🌥️", // 有点难过
-        5: "⛅", // 平静
-        6: "🌤️", // 稍微开心
-        7: "🌞", // 开心
-        8: "⭐", // 非常开心
-        9: "🌟", // 激动
-        10: "✨" // 极度开心
+        1: "⛈️", // Extremely sad
+        2: "🌧️", // Very sad
+        3: "☁️", // Sad
+        4: "🌥️", // A bit sad
+        5: "⛅", // Neutral
+        6: "🌤️", // Slightly happy
+        7: "🌞", // Happy
+        8: "⭐", // Very happy
+        9: "🌟", // Excited
+        10: "✨" // Extremely happy
     };
 
     const moodDescriptions = {
@@ -55,35 +53,35 @@ if (moodLogs.length >= 5) {
         10: "Extremely Happy"
     };
 
-    // 绘制折线图
+    // Draw the line chart
     const ctx = document.getElementById('mood-chart').getContext('2d');
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: timestamps, // 横轴用于悬停显示时间
+            labels: timestamps, // X-axis for displaying timestamps on hover
             datasets: [{
-                label: '', // 不显示图例
+                label: '', // Hide legend label
                 data: scores,
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderWidth: 2,
-                pointRadius: 0, // 隐藏默认点
-                hoverRadius: 0, // 禁用悬停时点的放大
-                tension: 0.4 // 平滑曲线
+                pointRadius: 0, // Hide default points
+                hoverRadius: 0, // Disable hover point scaling
+                tension: 0.4 // Smooth curves
             }]
         },
         options: {
-            responsive: true, // 响应式布局
+            responsive: true, // Enable responsive layout
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false // 去掉图例
+                    display: false // Remove legend
                 },
                 tooltip: {
-                    enabled: true, // 启用悬停提示
+                    enabled: true, // Enable hover tooltips
                     callbacks: {
                         title: function(context) {
-                            // 显示时间
+                            // Display timestamp
                             return `Time: ${context[0].label}`;
                         },
                         label: function(context) {
@@ -94,19 +92,19 @@ if (moodLogs.length >= 5) {
                     }
                 },
                 datalabels: {
-                    align: 'center', // 图标位置在点上
+                    align: 'center', // Place label at the center of points
                     anchor: 'center',
                     font: {
                         size: 16
                     },
                     formatter: function(value) {
-                        return moodIcons[value]; // 显示心情图标
+                        return moodIcons[value]; // Display mood icons
                     }
                 }
             },
             scales: {
                 x: {
-                    display: false // 不显示横轴内容
+                    display: false // Hide X-axis content
                 },
                 y: {
                     title: {
@@ -118,7 +116,7 @@ if (moodLogs.length >= 5) {
                 }
             }
         },
-        plugins: [ChartDataLabels] // 启用数据标签插件
+        plugins: [ChartDataLabels] // Enable data labels plugin
     });
 }
 </script>

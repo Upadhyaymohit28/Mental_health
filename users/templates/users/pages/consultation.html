@@ -5,9 +5,9 @@
 
 {% block content %}
 <div class="container">
-    <!-- 主题色背景卡片 -->
+    <!-- Theme-colored card -->
     <div class="theme-card">
-        <!-- 医生列表 -->
+        <!-- Doctor list -->
         <div class="doctor-list">
             <h3>Your Doctors</h3>
             <div class="doctor-item" onclick="startDoctorChat(1)"> 
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <!-- 聊天框 -->
+        <!-- Chat box -->
         <div class="chat-card">
             <div class="chat-header" id="chat-header">Select a doctor to start chatting...</div>
             <div id="chatbot-messages" class="chat-messages empty">
@@ -127,9 +127,9 @@
     .doctor-avatar {
         width: 50px;
         height: 50px;
-        border-radius: 50%; /* 圆形样式 */
-        object-fit: cover; /* 确保图片不拉伸 */
-        border: 2px solid #fff; /* 添加白色边框 */
+        border-radius: 50%; /* Circular style */
+        object-fit: cover; /* Ensure images are not stretched */
+        border: 2px solid #fff; /* Add white border */
     }
 
     .doctor-info {
@@ -169,43 +169,44 @@
     gap: 15px;
 }
 
-/* 医生信息部分 */
+/* Doctor information section */
 .doctor-chat-info {
     display: flex;
     align-items: center;
-    gap: 15px; /* 头像和医生信息之间的间隔 */
+    gap: 15px; /* Gap between avatar and doctor information */
 }
 
-/* 名字和专长部分 */
+/* Name and specialty section */
 .doctor-name-specialty {
     display: flex;
-    gap: 10px; /* 控制名字和专长之间的间距 */
+    gap: 10px; /* Space between name and specialty */
 }
 
-/* 医生名字 */
+/* Doctor name */
 .doctor-chat-name {
     font-size: 18px;
     font-weight: bold;
-    color: #333; /* 黑色 */
+    color: #333; /* Black color */
 }
 
-/* 医生专长 */
+/* Doctor specialty */
 .doctor-chat-specialty {
     font-size: 14px;
-    font-style: italic; /* 斜体 */
-    color: #333; /* 黑色 */
-    font-weight: normal; /* 不加粗 */
+    font-style: italic; /* Italic style */
+    color: #333; /* Black color */
+    font-weight: normal; /* Normal weight */
 }
 
 
 .doctor-description {
     font-size: 12px;
-    font-style: italic; /* 斜体 */
-    color: #777; /* 灰色 */
+    font-style: italic; /* Italic style */
+    color: #777; /* Gray color */
 }
 
 
-    .chat-messages {
+/* Chat message area */
+.chat-messages {
         flex: 1;
         overflow-y: auto;
         padding: 10px;
@@ -222,90 +223,92 @@
         font-size: 16px;
     }
     
-    /* 消息容器样式 */
+
+/* Message container style */
 .message-container {
     display: flex;
     align-items: flex-start;
     margin-bottom: 10px;
 }
 
-/* 医生消息靠左显示 */
+/* Doctor messages aligned to the left */
 .doctor-message {
-    flex-direction: row; /* 默认从左到右 */
+    flex-direction: row; /* Default left-to-right */
 }
 
-/* 用户消息靠右显示 */
+/* User messages aligned to the right */
 .user-message {
-    flex-direction: row-reverse;
+    flex-direction: row-reverse; /* Right-to-left */
     text-align: right;
 }
 
-/* 头像样式 */
+/* Avatar style */
 .avatar {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 50%; /* Circular avatar */
     margin: 0 10px;
-    object-fit: cover;
+    object-fit: cover; /* Ensure images are not stretched */
 }
 
-/* 用户字母头像样式 */
+/* User letter avatar style */
 .user-avatar {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ccc;
-    color: #fff;
+    background-color: #ccc; /* Default gray background */
+    color: #fff; /* White text */
     font-size: 16px;
     font-weight: bold;
 }
 
-/* 消息文本样式 */
+/* Message text style */
 .message-text {
-    background-color: #f1f1f1;
-    border-radius: 10px;
+    background-color: #f1f1f1; /* Message bubble background */
+    border-radius: 10px; /* Rounded corners */
     padding: 10px;
-    max-width: 60%;
-    word-wrap: break-word;
+    max-width: 60%; /* Limit max width */
+    word-wrap: break-word; /* Auto line break */
 }
 
-/* 不同背景颜色 */
+/* Background for doctor messages */
 .doctor-message .message-text {
-    background-color: #e6f7ff;
+    background-color: #e6f7ff; /* Light blue background */
 }
 
+/* Background for user messages */
 .user-message .message-text {
-    background-color: #d9f7be;
+    background-color: #d9f7be; /* Light green background */
 }
 
-    
-    
+.chat-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
 
-    .chat-input {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
+/* Chat input field style */
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
 
-    .chat-input input {
-        flex: 1;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-    }
+/* Send button style */
+.chat-input button {
+    padding: 10px 20px;
+    background-color: var(--theme-color); /* Use theme color */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Smooth color transition */
+}
 
-    .chat-input button {
-        padding: 10px 20px;
-        background-color: var(--theme-color);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-    .chat-input button:hover {
-        background-color: #0056b3;
-    }
+/* Hover effect for send button */
+.chat-input button:hover {
+    background-color: #0056b3; /* Darker blue */
+}
 </style>
 {% endblock %}
