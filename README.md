@@ -1,4 +1,43 @@
-# **AI-Powered Mental Health Assistant**
+# **Background** 
+
+Mental health is a significant concern worldwide, with approximately 1 in 5 adults experiencing mental health challenges annually. Despite the growing awareness, timely and affordable mental health care remains inaccessible for many. Traditional solutions often fail to engage users consistently, resulting in unmet needs for those seeking help. 
+
+To address these challenges, ZenMind was conceived as an AI-powered mental health support platform. The goal is to bridge the gap between users and effective mental health care through technology that is accessible, scalable, and engaging.
+
+
+# **Introduction** 
+
+ZenMind Overview 
+
+ZenMind is an innovative AI-powered mental health application designed to provide empathetic and personalized support. The application addresses common mental health issues by leveraging advanced technology, including AI chat assistants, mood tracking, and gamification, to ensure users feel supported and motivated in their mental health journey. 
+
+Problem Statement 
+
+- Limited access to timely and affordable mental health care. 
+- Existing solutions often fail to provide consistent user engagement. 
+
+Mission Statement 
+
+ZenMind's mission is to create an accessible, engaging, and scalable mental health platform that empowers users to take control of their mental well-being. 
+
+Key Features 
+
+- AI Chat Assistant: Empathetically responds to user queries and provides self-care tips. 
+- Mood Tracker: Logs emotions and trends over time for better self-awareness. 
+- Personalized Recommendations: Suggests articles, exercises, and professional consultations tailored to individual needs. 
+- Gamification: Encourages consistent engagement through challenges and milestone badges. 
+- Crisis Support: Connects users with emergency contacts and professional resources when needed. 
+
+Technology Stack 
+
+- Frontend: HTML, CSS, JavaScript for responsive user interfaces. 
+- Backend: Django for robust and scalable backend operations. 
+- AI Integration: OpenAI's GPT-4 for advanced natural language processing. 
+- Database: SQLite for secure and efficient data handling, with plans for future scalability. 
+
+ 
+
+ # **AI-Powered Mental Health Assistant**
 
 An innovative AI-driven platform designed to provide users with tools for tracking mental health, engaging with gamification, and accessing personalized support resources. Our app integrates advanced AI features with an intuitive user interface to empower users to take control of their mental well-being. (Mohit could add some content)
 
@@ -385,9 +424,111 @@ def chatbot_response(request):
 
 ## **Contributors**
 - **GNG 5300 Group 5**
-  - Mohit Upadhyay (**Your Name**: [https://github.com/Upadhyaymohit28/Mental_health](https://github.com/Upadhyaymohit28/Mental_health))
-  - Zewei Wang (**Rocker**: [https://github.com/zewei-wang/Mental_health/tree/main](https://github.com/zewei-wang/Mental_health))
-  - Xu Gao (**Wadeahh3**: [https://github.com/Wadeahh3/Mental_health](https://github.com/Wadeahh3/Mental_health))
+ 
+
+Mohit Upadhyay 
+
+ - Mohit Upadhyay (**Your Name**: [https://github.com/Upadhyaymohit28/Mental_health](https://github.com/Upadhyaymohit28/Mental_health))
+
+Primary Role: AI Integration and Team Coordination 
+
+Mohit took the lead in several critical areas of the project, demonstrating a blend of technical and managerial skills. 
+
+AI Chatbot Development and Integration: 
+
+Designed the architecture and logic for the AI chatbot powered by OpenAI's GPT-4. 
+
+Ensured that the chatbot could empathetically respond to user queries, provide actionable self-care tips, and recommend mental health resources. 
+
+Integrated the AI chatbot seamlessly with the backend using Django, ensuring secure communication and real-time responses. 
+
+Project Management: 
+
+Organized regular team meetings to align objectives, timelines, and deliverables. 
+
+Oversaw the approval process for code merges, ensuring that all contributions adhered to the project’s coding standards and goals. 
+
+Frontend and Backend Integration: 
+
+Worked extensively on connecting the frontend interface with the backend functionality, particularly for AI integration. 
+
+Debugged and optimized frontend-backend communication to ensure a smooth user experience. 
+
+Bug Resolution and Testing: 
+
+Identified and resolved critical bugs in both frontend and backend components during the development phase. 
+
+Conducted rigorous testing of the AI chatbot’s responses to ensure accuracy, relevance, and empathy. 
+
+Zewei Wang 
+
+ - Zewei Wang (**Rocker**: [https://github.com/zewei-wang/Mental_health/tree/main](https://github.com/zewei-wang/Mental_health))
+
+Primary Role: Backend Development and Integration Support 
+
+Zewei contributed significantly to the backend infrastructure and supported the overall integration process. 
+
+Backend Optimization: 
+
+Improved the initial backend setup, focusing on modular design to ensure scalability and flexibility. 
+
+Optimized database queries for better performance and faster response times, critical for handling real-time user interactions. 
+
+Code Merge Support: 
+
+Played a key role in addressing and resolving code merge conflicts, facilitating seamless collaboration among team members. 
+
+Reviewed code submitted by the team to maintain consistency and quality. 
+
+Bug Fixing: 
+
+Resolved complex bugs related to chatbot data parsing, ensuring accurate information retrieval and display. 
+
+Addressed frontend routing issues to enhance navigation and user experience. 
+
+Backend-Frontend Query Resolution: 
+
+Provided technical support to ensure smooth communication between frontend and backend components. 
+
+Helped other team members resolve integration challenges. 
+
+
+Xu Gao 
+
+ - Xu Gao (**Wadeahh3**: [https://github.com/Wadeahh3/Mental_health](https://github.com/Wadeahh3/Mental_health))
+
+Primary Role: Frontend Design and Application Testing 
+
+Xu’s primary focus was on creating a user-friendly interface and ensuring the application met user expectations. 
+
+Frontend Design and Development: 
+
+Designed the application’s user interface with an emphasis on simplicity, responsiveness, and accessibility. 
+
+Incorporated interactive elements such as mood tracking, streak progress bars, and challenge lists to enhance user engagement. 
+
+Worked on implementing AJAX for dynamic updates, such as badges and challenges. 
+
+Backend Logic Optimization: 
+
+Collaborated with the team to refine backend logic, particularly focusing on the interaction between frontend and backend elements. 
+
+Approved and integrated optimized backend logic into the application framework. 
+
+Testing and Debugging: 
+
+Conducted end-to-end testing to ensure the application performed as intended. 
+
+Tested all core features, including the AI chatbot, mood tracker, and gamification elements. 
+
+Resolved remaining bugs, including those affecting the user interface and backend processing. 
+
+Approval Process and Finalization: 
+
+Participated in the review and approval of merged code to ensure functionality and coherence across all components. 
+
+Tested the application in real-world scenarios to validate its performance and usability. 
+
 
 ---
 
