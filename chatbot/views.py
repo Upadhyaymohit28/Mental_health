@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 logger = logging.getLogger(__name__)
 
 # Set your OpenAI API key
-openai.api_key = "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"
+openai.api_key = "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"
 # Session tracker for doctor chats
 conversation_start_time = {}
 
